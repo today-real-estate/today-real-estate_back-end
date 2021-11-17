@@ -10,6 +10,8 @@ import com.ssafy.realestate.user.exception.NoUserFoundException;
 import com.ssafy.realestate.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

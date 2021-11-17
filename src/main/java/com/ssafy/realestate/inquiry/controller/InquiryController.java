@@ -24,8 +24,8 @@ public class InquiryController {
 
     @GetMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<List<InquiryResponseDto>> findByUserId(@RequestParam("page")int page, @RequestBody InquiryRequestId inquiryRequestId) {
-        return ResponseEntity.ok(inquiryService.findByUserId(inquiryRequestId.getUserId()));
+    public ResponseEntity<List<InquiryResponseDto>> findByUserId(@RequestParam("userId")Long userId) {
+        return ResponseEntity.ok(inquiryService.findByUserId(userId));
     }
 
     @GetMapping("/detail/{id}")
