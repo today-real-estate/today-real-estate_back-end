@@ -9,6 +9,7 @@ public class UserTokenInfoDto {
     private Long id;
     private String userName;
     private String userEmail;
+    private String nickname;
     private String token;
 
 }
