@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.net.URI;
+
 import static com.ssafy.realestate.user.jwt.AuthInterceptor.TOKEN_HEADER;
 
 @Slf4j
@@ -36,13 +36,12 @@ public class UserController {
         String jwt = tokenProvider.createToken(userEntity);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(AuthInterceptor.AUTHORIZATION_HEADER, TOKEN_HEADER + jwt);
-        return new ResponseEntity<>(new UserTokenInfoDto(userEntity.getId(),userEntity.getUserName(),userEntity.getUserEmail(), jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(new UserTokenInfoDto(userEntity.getId(), userEntity.getUserName(), userEntity.getUserEmail(), jwt), httpHeaders, HttpStatus.OK);
     }
+
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody @Valid UserSignupDto userSignUpDto) throws Exception {
+    public ResponseEntity<Long> signUp(@RequestBody @Valid UserSignupDto userSignUpDto) throws Exception {
         UserResponseDto savedUser = userManagementService.save(userSignUpDto);
-        return ResponseEntity
-                .created(URI.create("/" + savedUser.getId()))
-                .build();
+        return ResponseEntity.ok().body(savedUser.getId());
     }
 }
