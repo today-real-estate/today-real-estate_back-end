@@ -47,7 +47,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         return true;
     }
-
     private boolean isPreflightRequest(HttpServletRequest request) {
         return isOptions(request) && hasHeaders(request) && hasMethod(request) && hasOrigin(request);
     }
