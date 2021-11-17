@@ -1,6 +1,7 @@
 package com.ssafy.realestate.inquiry.controller;
 
 import com.ssafy.realestate.inquiry.dto.InquiryRequestDto;
+import com.ssafy.realestate.inquiry.dto.InquiryRequestId;
 import com.ssafy.realestate.inquiry.dto.InquiryResponseDto;
 import com.ssafy.realestate.inquiry.dto.InquiryUpdateDto;
 import com.ssafy.realestate.inquiry.service.InquiryService;
@@ -23,8 +24,8 @@ public class InquiryController {
 
     @GetMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<List<InquiryResponseDto>> findByUserId(@RequestParam("userId")Long userId) {
-        return ResponseEntity.ok(inquiryService.findByUserId(userId));
+    public ResponseEntity<List<InquiryResponseDto>> findByUserId(@RequestParam("page")int page, @RequestBody InquiryRequestId inquiryRequestId) {
+        return ResponseEntity.ok(inquiryService.findByUserId(inquiryRequestId.getUserId()));
     }
 
     @GetMapping("/detail/{id}")
