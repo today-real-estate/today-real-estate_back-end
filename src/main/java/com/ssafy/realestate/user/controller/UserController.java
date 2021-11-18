@@ -46,10 +46,17 @@ public class UserController {
         return new ResponseEntity(userManagementService.validateDuplicatedEmail(object.get("userEmail")), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/username")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDto userUpdateDto) {
-        userManagementService.update(userUpdateDto);
+    public ResponseEntity<Void> updateName(@RequestBody @Valid UserUpdateDto userUpdateDto) {
+        userManagementService.updateUserName(userUpdateDto);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping("/update/nickname")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<Void> updateNickname(@RequestBody @Valid UpdateNickDto updateNickDto) {
+        userManagementService.updateNickName(updateNickDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -63,7 +70,6 @@ public class UserController {
     @DeleteMapping("/delete")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Void> delete(@RequestBody Map<String,Long> object) {
-        log.info(object.get("userId")+"zz");
         userManagementService.deleteById(object.get("userId"));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

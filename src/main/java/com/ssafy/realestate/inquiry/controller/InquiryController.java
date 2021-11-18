@@ -47,11 +47,11 @@ public class InquiryController {
         return ResponseEntity.ok("id :"+inquiryService.update(inquiryUpdateDto).getId()+" 수정완료");
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<String> delete(@RequestBody Map<String,Long> object) {
-        inquiryService.deleteById(object.get("id"));
-        return ResponseEntity.ok("id :"+object.get("id")+" 삭제완료");
+    public ResponseEntity<String> delete(@PathVariable("id")Long id) {
+        inquiryService.deleteById(id);
+        return ResponseEntity.ok("id :"+id+" 삭제완료");
     }
 
 }

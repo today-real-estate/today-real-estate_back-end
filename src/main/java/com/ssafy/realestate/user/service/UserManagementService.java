@@ -1,9 +1,6 @@
 package com.ssafy.realestate.user.service;
 
-import com.ssafy.realestate.user.dto.UserLoginRequestDto;
-import com.ssafy.realestate.user.dto.UserResponseDto;
-import com.ssafy.realestate.user.dto.UserSignupDto;
-import com.ssafy.realestate.user.dto.UserUpdateDto;
+import com.ssafy.realestate.user.dto.*;
 import com.ssafy.realestate.user.encoder.BCryptPasswordEncoder;
 import com.ssafy.realestate.user.entity.Authority;
 import com.ssafy.realestate.user.entity.UserAuthority;
@@ -71,18 +68,32 @@ public class UserManagementService {
         return true;
     }
 
-    public void update(UserUpdateDto userUpdateDto) {
+    public void updateUserName(UserUpdateDto userUpdateDto) {
         UserEntity updateUser = userUpdateDto.toUserEntity();
         UserEntity originUser = userRepository.findById(userUpdateDto.getUserId()).orElseThrow(NoUserFoundException::new);
-        if (!originUser.getUserEmail().equals(userUpdateDto.getUserEmail())) {
-            validateDuplicatedEmail(userUpdateDto.getUserEmail());
-        }
 
         UserEntity user = UserEntity.builder()
-                .id(updateUser.getId())
-                .userEmail(updateUser.getUserEmail())
-                .password(passwordEncoder.encrypt(updateUser.getPassword()))
+                .id(originUser.getId())
+                .userEmail(originUser.getUserEmail())
+                .password(originUser.getPassword())
                 .userName(updateUser.getUserName())
+                .nickname(originUser.getNickname())
+                .authorities(originUser.getAuthorities())
+                .inquiries(originUser.getInquiries())
+                .build();
+        userRepository.save(user);
+    }
+
+
+    public void updateNickName(UpdateNickDto updateNickDto) {
+        UserEntity updateUser = updateNickDto.toUserEntity();
+        UserEntity originUser = userRepository.findById(updateNickDto.getUserId()).orElseThrow(NoUserFoundException::new);
+
+        UserEntity user = UserEntity.builder()
+                .id(originUser.getId())
+                .userEmail(originUser.getUserEmail())
+                .password(originUser.getPassword())
+                .userName(originUser.getUserName())
                 .nickname(updateUser.getNickname())
                 .authorities(originUser.getAuthorities())
                 .inquiries(originUser.getInquiries())
@@ -95,9 +106,11 @@ public class UserManagementService {
         return UserResponseDto.from(user.orElseThrow(NoUserFoundException::new));
     }
 
+    @Transactional
     public void deleteById(Long id) {
-        log.info(id + "service");
-        UserEntity user = userRepository.findById(id).orElseThrow(NoUserFoundException::new);
+        if (!userRepository.existsById(id)) {
+            throw new NoUserFoundException();
+        }
         userRepository.deleteById(id);
     }
 }
