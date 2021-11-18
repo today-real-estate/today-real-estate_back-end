@@ -16,6 +16,9 @@ public class InquiryUpdateDto {
     @Id
     private Long id;
 
+    @NotBlank(message = "User id 가 없습니다.")
+    private Long userId;
+
     @NotBlank(message = "내용을 입력하세요")
     private String inquiryType;
 
