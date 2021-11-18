@@ -1,19 +1,18 @@
 package com.ssafy.realestate.inquiry.controller;
 
 import com.ssafy.realestate.inquiry.dto.InquiryRequestDto;
-import com.ssafy.realestate.inquiry.dto.InquiryRequestId;
 import com.ssafy.realestate.inquiry.dto.InquiryResponseDto;
 import com.ssafy.realestate.inquiry.dto.InquiryUpdateDto;
 import com.ssafy.realestate.inquiry.service.InquiryService;
 import com.ssafy.realestate.user.annotation.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -24,13 +23,13 @@ public class InquiryController {
 
     @GetMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<List<InquiryResponseDto>> findByUserId(@RequestParam("userId")Long userId) {
-        return ResponseEntity.ok(inquiryService.findByUserId(userId));
+    public ResponseEntity<List<InquiryResponseDto>> findByUserId(@RequestBody Map<String,Long> object) {
+        return ResponseEntity.ok(inquiryService.findByUserId(object.get("userId")));
     }
 
     @GetMapping("/detail/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<InquiryResponseDto> findById(@PathVariable("id") Long id,@RequestParam("userId") Long userId) {
+    public ResponseEntity<InquiryResponseDto> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(inquiryService.findById(id));
     }
 
@@ -45,16 +44,14 @@ public class InquiryController {
     @PutMapping("/update")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<String> update(@RequestBody InquiryUpdateDto inquiryUpdateDto) {
-        InquiryResponseDto postResponseDto = inquiryService.update(inquiryUpdateDto);
-        return ResponseEntity.created(URI.create("/" + postResponseDto.getId()))
-                .build();
+        return ResponseEntity.ok("id :"+inquiryService.update(inquiryUpdateDto).getId()+" 수정완료");
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-        inquiryService.deleteById(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> delete(@RequestBody Map<String,Long> object) {
+        inquiryService.deleteById(object.get("id"));
+        return ResponseEntity.ok("id :"+object.get("id")+" 삭제완료");
     }
 
 }
