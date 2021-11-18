@@ -95,9 +95,11 @@ public class UserManagementService {
         return UserResponseDto.from(user.orElseThrow(NoUserFoundException::new));
     }
 
+    @Transactional
     public void deleteById(Long id) {
-        log.info(id + "service");
-        UserEntity user = userRepository.findById(id).orElseThrow(NoUserFoundException::new);
+        if (!userRepository.existsById(id)) {
+            throw new NoUserFoundException();
+        }
         userRepository.deleteById(id);
     }
 }
