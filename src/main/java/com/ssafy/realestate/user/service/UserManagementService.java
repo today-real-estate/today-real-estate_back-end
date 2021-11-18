@@ -3,6 +3,7 @@ package com.ssafy.realestate.user.service;
 import com.ssafy.realestate.user.dto.UserLoginRequestDto;
 import com.ssafy.realestate.user.dto.UserResponseDto;
 import com.ssafy.realestate.user.dto.UserSignupDto;
+import com.ssafy.realestate.user.dto.UserUpdateDto;
 import com.ssafy.realestate.user.encoder.BCryptPasswordEncoder;
 import com.ssafy.realestate.user.entity.Authority;
 import com.ssafy.realestate.user.entity.UserAuthority;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -66,5 +69,35 @@ public class UserManagementService {
             return false;
         }
         return true;
+    }
+
+    public void update(UserUpdateDto userUpdateDto) {
+        UserEntity updateUser = userUpdateDto.toUserEntity();
+        UserEntity originUser = userRepository.findById(userUpdateDto.getUserId()).orElseThrow(NoUserFoundException::new);
+        if (!originUser.getUserEmail().equals(userUpdateDto.getUserEmail())) {
+            validateDuplicatedEmail(userUpdateDto.getUserEmail());
+        }
+
+        UserEntity user = UserEntity.builder()
+                .id(updateUser.getId())
+                .userEmail(updateUser.getUserEmail())
+                .password(passwordEncoder.encrypt(updateUser.getPassword()))
+                .userName(updateUser.getUserName())
+                .nickname(updateUser.getNickname())
+                .authorities(originUser.getAuthorities())
+                .inquiries(originUser.getInquiries())
+                .build();
+        userRepository.save(user);
+    }
+
+    public UserResponseDto findById(Long id) {
+        Optional<UserEntity> user = userRepository.findById(id);
+        return UserResponseDto.from(user.orElseThrow(NoUserFoundException::new));
+    }
+
+    public void deleteById(Long id) {
+        log.info(id + "service");
+        UserEntity user = userRepository.findById(id).orElseThrow(NoUserFoundException::new);
+        userRepository.deleteById(id);
     }
 }
