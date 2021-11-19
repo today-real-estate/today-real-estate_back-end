@@ -35,5 +35,4 @@ public class Inquiry extends BaseTimeEntity {
 
     private boolean isComplete;
 
-
 }
