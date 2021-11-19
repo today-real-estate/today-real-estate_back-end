@@ -10,11 +10,11 @@ import com.ssafy.realestate.user.exception.NoUserFoundException;
 import com.ssafy.realestate.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,11 +62,8 @@ public class InquiryService {
 
     @Transactional
     public void deleteById(Long id) {
-        if (!inquiryRepository.existsById(id)) {
-            throw new IllegalArgumentException("존재하지 않는 문의 입니다");
-        }
+        Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문의 입니다"));
         inquiryRepository.deleteById(id);
     }
-
 
 }

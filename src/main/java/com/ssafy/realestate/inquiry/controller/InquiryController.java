@@ -44,7 +44,7 @@ public class InquiryController {
     @PutMapping("/update")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<String> update(@RequestBody InquiryUpdateDto inquiryUpdateDto) {
-        return ResponseEntity.ok("id :"+inquiryService.update(inquiryUpdateDto).getId()+" 수정완료");
+        return ResponseEntity.ok("id :" + inquiryService.update(inquiryUpdateDto).getId() + " 수정완료");
     }
 
     @DeleteMapping("/delete/{id}")
@@ -53,5 +53,4 @@ public class InquiryController {
         inquiryService.deleteById(id);
         return ResponseEntity.ok("id :"+id+" 삭제완료");
     }
-
 }

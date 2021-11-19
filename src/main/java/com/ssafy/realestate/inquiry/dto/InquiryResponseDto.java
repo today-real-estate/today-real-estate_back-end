@@ -14,11 +14,12 @@ public class InquiryResponseDto {
     private String content;
     private String inquiryType;
     private boolean isComplete;
+    private String imageUrl;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
     public static InquiryResponseDto from(Inquiry inquiry) {
         return new InquiryResponseDto(inquiry.getId(), inquiry.getTitle(), inquiry.getContent(), inquiry.getInquiryType(), inquiry.isComplete(),
-                inquiry.getCreatedDate(), inquiry.getModifiedDate());
+                inquiry.getInquiryImage().getImageUrl(),inquiry.getCreatedDate(), inquiry.getModifiedDate());
     }
 }
