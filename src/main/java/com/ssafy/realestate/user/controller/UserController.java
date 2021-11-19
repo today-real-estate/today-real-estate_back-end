@@ -1,9 +1,7 @@
 package com.ssafy.realestate.user.controller;
 
-import com.ssafy.realestate.user.dto.UserLoginRequestDto;
-import com.ssafy.realestate.user.dto.UserResponseDto;
-import com.ssafy.realestate.user.dto.UserSignupDto;
-import com.ssafy.realestate.user.dto.UserTokenInfoDto;
+import com.ssafy.realestate.user.annotation.PreAuthorize;
+import com.ssafy.realestate.user.dto.*;
 import com.ssafy.realestate.user.entity.UserEntity;
 import com.ssafy.realestate.user.jwt.AuthInterceptor;
 import com.ssafy.realestate.user.jwt.TokenProvider;
@@ -13,12 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.Map;
 
 import static com.ssafy.realestate.user.jwt.AuthInterceptor.TOKEN_HEADER;
 
@@ -43,5 +40,37 @@ public class UserController {
     public ResponseEntity<Long> signUp(@RequestBody @Valid UserSignupDto userSignUpDto) throws Exception {
         UserResponseDto savedUser = userManagementService.save(userSignUpDto);
         return ResponseEntity.ok().body(savedUser.getId());
+    }
+    @GetMapping("/emails-check")
+    public ResponseEntity<Boolean> isDuplicatedEmail(@RequestBody Map<String,String> object) {
+        return new ResponseEntity(userManagementService.validateDuplicatedEmail(object.get("userEmail")), HttpStatus.OK);
+    }
+
+    @PutMapping("/update/username")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<Void> updateName(@RequestBody @Valid UserUpdateDto userUpdateDto) {
+        userManagementService.updateUserName(userUpdateDto);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping("/update/nickname")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<Void> updateNickname(@RequestBody @Valid UpdateNickDto updateNickDto) {
+        userManagementService.updateNickName(updateNickDto);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/details")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<UserResponseDto> details(Map<String,Long> object) {
+        UserResponseDto userDetails = userManagementService.findById(object.get("userId"));
+        return new ResponseEntity(userDetails, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<Void> delete(@RequestBody Map<String,Long> object) {
+        userManagementService.deleteById(object.get("userId"));
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

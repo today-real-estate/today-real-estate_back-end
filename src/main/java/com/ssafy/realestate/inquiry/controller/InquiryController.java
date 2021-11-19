@@ -23,8 +23,8 @@ public class InquiryController {
 
     @GetMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<List<InquiryResponseDto>> findByUserId(@RequestBody Map<String, Long> object) {
-        return ResponseEntity.ok(inquiryService.findByUserId(object.get("userId")));
+    public ResponseEntity<List<InquiryResponseDto>> findByUserId(@RequestParam("userId")Long userId) {
+        return ResponseEntity.ok(inquiryService.findByUserId(userId));
     }
 
     @GetMapping("/detail/{id}")
@@ -47,10 +47,10 @@ public class InquiryController {
         return ResponseEntity.ok("id :" + inquiryService.update(inquiryUpdateDto).getId() + " 수정완료");
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<String> delete(@RequestBody Map<String, Long> object) {
-        inquiryService.deleteById(object.get("id"));
-        return ResponseEntity.ok("id :" + object.get("id") + " 삭제완료");
+    public ResponseEntity<String> delete(@PathVariable("id")Long id) {
+        inquiryService.deleteById(id);
+        return ResponseEntity.ok("id :"+id+" 삭제완료");
     }
 }
