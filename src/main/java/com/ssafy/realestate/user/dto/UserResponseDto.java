@@ -17,11 +17,11 @@ public class UserResponseDto {
     private Long id;
     private String userEmail;
     private String nickname;
-    private List<UserAuthority> authorities;
+    private String profileImage;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
     public static UserResponseDto from(UserEntity user) {
-        return new UserResponseDto(user.getId(), user.getUserEmail(), user.getNickname(), user.getAuthorities(), user.getCreatedDate(), user.getModifiedDate());
+        return new UserResponseDto(user.getId(), user.getUserEmail(), user.getNickname(), "", user.getCreatedDate(), user.getModifiedDate());
     }
 }

@@ -60,17 +60,17 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/details")
+    @GetMapping("/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<UserResponseDto> details(Map<String,Long> object) {
-        UserResponseDto userDetails = userManagementService.findById(object.get("userId"));
+    public ResponseEntity<UserResponseDto> details(@PathVariable("id")Long id) {
+        UserResponseDto userDetails = userManagementService.findById(id);
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Void> delete(@RequestBody Map<String,Long> object) {
-        userManagementService.deleteById(object.get("userId"));
+    public ResponseEntity<Void> delete(@PathVariable("id")Long id) {
+        userManagementService.deleteById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
