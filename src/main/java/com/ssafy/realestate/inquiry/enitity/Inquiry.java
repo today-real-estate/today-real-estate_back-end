@@ -21,7 +21,7 @@ public class Inquiry extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference(value = "user-inquiry")
     private UserEntity user;
 
     @NotBlank(message = "문의 유형이 없습니다.")

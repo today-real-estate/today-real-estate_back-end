@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.nio.file.AccessDeniedException;
 
-@RestControllerAdvice("com.skhu.luxuryshop.user.controller")
+@RestControllerAdvice(basePackages = "com.ssafy.realestate.user.controller")
 @Slf4j
 public class UserExceptionControllerAdvice {
 
@@ -36,6 +36,12 @@ public class UserExceptionControllerAdvice {
 
     @ExceptionHandler(NoUserFoundException.class)
     public ResponseEntity<String> noUserFoundException(NoUserFoundException e) {
+        log.error(e.getMessage(), e);
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(NoUserException.class)
+    public ResponseEntity<String> NoUserException(NoUserFoundException e) {
         log.error(e.getMessage(), e);
         return ResponseEntity.badRequest().body(e.getMessage());
     }

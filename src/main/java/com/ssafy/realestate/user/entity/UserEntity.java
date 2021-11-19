@@ -1,5 +1,6 @@
 package com.ssafy.realestate.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.realestate.common.BaseTimeEntity;
 import com.ssafy.realestate.inquiry.enitity.Inquiry;
@@ -45,7 +46,7 @@ public class UserEntity extends BaseTimeEntity {
 
     @OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonManagedReference
+    @JsonBackReference(value = "user-inquiry")
     private List<Inquiry> inquiries;
 
 }

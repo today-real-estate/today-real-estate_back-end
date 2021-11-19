@@ -4,17 +4,17 @@ import com.ssafy.realestate.inquiry.dto.InquiryRequestDto;
 import com.ssafy.realestate.inquiry.dto.InquiryResponseDto;
 import com.ssafy.realestate.inquiry.dto.InquiryUpdateDto;
 import com.ssafy.realestate.inquiry.enitity.Inquiry;
+import com.ssafy.realestate.inquiry.exception.NoInquiryIdException;
+import com.ssafy.realestate.inquiry.exception.NoInquiryUserIdException;
 import com.ssafy.realestate.inquiry.repository.InquiryRepository;
 import com.ssafy.realestate.user.entity.UserEntity;
-import com.ssafy.realestate.user.exception.NoUserFoundException;
+import com.ssafy.realestate.user.exception.NoUserException;
 import com.ssafy.realestate.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,20 +26,19 @@ public class InquiryService {
     private final UserRepository userRepository;
 
     public List<InquiryResponseDto> findByUserId(Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        UserEntity user = userRepository.findById(userId).orElseThrow(NoInquiryUserIdException::new);
         List<Inquiry> inquiries = inquiryRepository.findByUserId(user.getId());
         return inquiries.stream().map(InquiryResponseDto::from).collect(Collectors.toList());
     }
 
     public InquiryResponseDto findById(Long id) {
-        Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문의 입니다"));
+        Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(NoInquiryIdException::new);
         return InquiryResponseDto.from(inquiry);
     }
 
     @Transactional
     public InquiryResponseDto save(InquiryRequestDto inquiryRequestDto) {
-        UserEntity user = userRepository.findById(inquiryRequestDto.getUserId())
-                .orElseThrow(NoUserFoundException::new);
+        UserEntity user = userRepository.findById(inquiryRequestDto.getUserId()).orElseThrow(NoInquiryUserIdException::new);
         return InquiryResponseDto.from(inquiryRepository.save(inquiryRequestDto.toSaveInquiryEntity(user)));
 
     }
@@ -48,7 +47,7 @@ public class InquiryService {
     public InquiryResponseDto update(InquiryUpdateDto inquiryUpdateDto) {
         Inquiry updateInquiry = inquiryUpdateDto.toUpdateInquiryEntity();
         Inquiry originInquiry = inquiryRepository.findById(inquiryUpdateDto.getId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다 id =" + updateInquiry.getId()));
+                .orElseThrow(NoInquiryIdException::new);
 
         Inquiry inquiry = Inquiry.builder()
                 .id(updateInquiry.getId())
@@ -62,8 +61,8 @@ public class InquiryService {
 
     @Transactional
     public void deleteById(Long id) {
-        Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문의 입니다"));
-        inquiryRepository.deleteById(id);
+        Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(NoInquiryIdException::new);
+        inquiryRepository.deleteById(inquiry.getId());
     }
 
 }

@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.Map;
 
 import static com.ssafy.realestate.user.jwt.AuthInterceptor.TOKEN_HEADER;

@@ -6,6 +6,7 @@ import com.ssafy.realestate.user.entity.Authority;
 import com.ssafy.realestate.user.entity.UserAuthority;
 import com.ssafy.realestate.user.entity.UserEntity;
 import com.ssafy.realestate.user.exception.DuplicatedEmailException;
+import com.ssafy.realestate.user.exception.NoUserException;
 import com.ssafy.realestate.user.exception.NoUserFoundException;
 import com.ssafy.realestate.user.exception.UnmatchedPasswordCheckException;
 import com.ssafy.realestate.user.repository.AuthorityRepository;
@@ -70,7 +71,7 @@ public class UserManagementService {
 
     public void updateUserName(UserUpdateDto userUpdateDto) {
         UserEntity updateUser = userUpdateDto.toUserEntity();
-        UserEntity originUser = userRepository.findById(userUpdateDto.getUserId()).orElseThrow(NoUserFoundException::new);
+        UserEntity originUser = userRepository.findById(userUpdateDto.getUserId()).orElseThrow(NoUserException::new);
 
         UserEntity user = UserEntity.builder()
                 .id(originUser.getId())
@@ -87,7 +88,7 @@ public class UserManagementService {
 
     public void updateNickName(UpdateNickDto updateNickDto) {
         UserEntity updateUser = updateNickDto.toUserEntity();
-        UserEntity originUser = userRepository.findById(updateNickDto.getUserId()).orElseThrow(NoUserFoundException::new);
+        UserEntity originUser = userRepository.findById(updateNickDto.getUserId()).orElseThrow(NoUserException::new);
 
         UserEntity user = UserEntity.builder()
                 .id(originUser.getId())
@@ -103,13 +104,13 @@ public class UserManagementService {
 
     public UserResponseDto findById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);
-        return UserResponseDto.from(user.orElseThrow(NoUserFoundException::new));
+        return UserResponseDto.from(user.orElseThrow(NoUserException::new));
     }
 
     @Transactional
     public void deleteById(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new NoUserFoundException();
+            throw new NoUserException();
         }
         userRepository.deleteById(id);
     }
