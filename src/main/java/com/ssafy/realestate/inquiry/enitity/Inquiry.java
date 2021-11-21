@@ -1,12 +1,15 @@
 package com.ssafy.realestate.inquiry.enitity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.realestate.common.BaseTimeEntity;
+import com.ssafy.realestate.user.entity.UserAuthority;
 import com.ssafy.realestate.user.entity.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Getter
 @Builder
@@ -34,5 +37,10 @@ public class Inquiry extends BaseTimeEntity {
     private String content;
 
     private boolean isComplete;
+
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "inquiry_answer_id", referencedColumnName = "id")
+    @JsonManagedReference(value = "inquiry-inquiryAnswer")
+    private InquiryAnswer inquiryAnswer;
 
 }

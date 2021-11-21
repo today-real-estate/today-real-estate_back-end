@@ -1,11 +1,11 @@
 package com.ssafy.realestate.inquiry.service;
 
+import com.ssafy.realestate.inquiry.dto.InquiryAnswerDto;
 import com.ssafy.realestate.inquiry.dto.InquiryRequestDto;
 import com.ssafy.realestate.inquiry.dto.InquiryResponseDto;
 import com.ssafy.realestate.inquiry.dto.InquiryUpdateDto;
 import com.ssafy.realestate.inquiry.enitity.Inquiry;
 import com.ssafy.realestate.inquiry.exception.NoInquiryIdException;
-import com.ssafy.realestate.inquiry.exception.NoInquiryUserIdException;
 import com.ssafy.realestate.inquiry.repository.InquiryRepository;
 import com.ssafy.realestate.user.entity.UserEntity;
 import com.ssafy.realestate.user.exception.NoUserException;
@@ -55,6 +55,7 @@ public class InquiryService {
                 .title(updateInquiry.getTitle())
                 .content(updateInquiry.getContent())
                 .user(originInquiry.getUser())
+                .inquiryAnswer(originInquiry.getInquiryAnswer())
                 .build();
         return InquiryResponseDto.from(inquiryRepository.save(inquiry));
     }
@@ -65,4 +66,6 @@ public class InquiryService {
         inquiryRepository.deleteById(inquiry.getId());
     }
 
+    public void answerSave(InquiryAnswerDto inquiryAnswerDto) {
+    }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.realestate.inquiry.controller;
 
+import com.ssafy.realestate.inquiry.dto.InquiryAnswerDto;
 import com.ssafy.realestate.inquiry.dto.InquiryRequestDto;
 import com.ssafy.realestate.inquiry.dto.InquiryResponseDto;
 import com.ssafy.realestate.inquiry.dto.InquiryUpdateDto;
@@ -51,5 +52,12 @@ public class InquiryController {
     public ResponseEntity<String> delete(@PathVariable("id")Long id) {
         inquiryService.deleteById(id);
         return ResponseEntity.ok("id :"+id+" 삭제완료");
+    }
+
+    @PostMapping("/answer/{id}")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<String> inquiryAnswerSave(@RequestBody InquiryAnswerDto InquiryAnswerDto) {
+        inquiryService.answerSave(InquiryAnswerDto);
+        return ResponseEntity.ok("Inquiry ID : "+InquiryAnswerDto.getInquiryId()+" 답변 저장 완료");
     }
 }
