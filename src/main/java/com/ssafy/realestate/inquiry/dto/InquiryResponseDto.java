@@ -16,9 +16,11 @@ public class InquiryResponseDto {
     private boolean isComplete;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+    private String answerContent;
+    private LocalDateTime answerCreatedDate;
 
     public static InquiryResponseDto from(Inquiry inquiry) {
         return new InquiryResponseDto(inquiry.getId(), inquiry.getTitle(), inquiry.getContent(), inquiry.getInquiryType(), inquiry.isComplete(),
-                inquiry.getCreatedDate(), inquiry.getModifiedDate());
+                inquiry.getCreatedDate(), inquiry.getModifiedDate(),inquiry.getInquiryAnswer().getAnswerContent(),inquiry.getInquiryAnswer().getCreatedDate());
     }
 }
