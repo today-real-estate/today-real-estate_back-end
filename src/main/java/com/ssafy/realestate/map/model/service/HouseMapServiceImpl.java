@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -32,13 +33,22 @@ public class HouseMapServiceImpl implements HouseMapService {
 	}
 
 	@Override
+	public List<HouseInfoDto> guApt(String gugun) throws SQLException {
+		return sqlSession.getMapper(HouseMapMapper.class).guApt(gugun);
+	}
+
+	@Override
 	public List<HouseInfoDto> getAptInDong(String dong) throws Exception {
 		return sqlSession.getMapper(HouseMapMapper.class).getAptInDong(dong);
 	}
 
 	@Override
-	public HouseInfoDto getAptName(String aptCode) {
+	public HouseInfoDto getAptName(String aptCode) throws SQLException {
 		return sqlSession.getMapper(HouseMapMapper.class).getAptName(aptCode);
 	}
 
+	@Override
+	public List<HouseInfoDto> dongNameSearch(String dongName) throws SQLException {
+		return sqlSession.getMapper(HouseMapMapper.class).dongNameSearch(dongName);
+	}
 }
