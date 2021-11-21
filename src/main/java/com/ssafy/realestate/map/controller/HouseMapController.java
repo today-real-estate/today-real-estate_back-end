@@ -32,9 +32,20 @@ public class HouseMapController {
         return new ResponseEntity<List<SidoGugunCodeDto>>(haHouseMapService.getGugunInSido(sido), HttpStatus.OK);
     }
 
+    @GetMapping("/gu/apt")
+    public ResponseEntity<List<HouseInfoDto>> guApt(@RequestParam("gugun") String gugun) throws Exception {
+        return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.guApt(gugun), HttpStatus.OK);
+    }
+
+
     @GetMapping("/dong")
     public ResponseEntity<List<HouseInfoDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
+    }
+
+    @GetMapping("/dongSearch")
+    public ResponseEntity<List<HouseInfoDto>> dongNameSearch(@RequestParam("dongName") String dongName) throws Exception {
+        return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.dongNameSearch(dongName), HttpStatus.OK);
     }
 
     @GetMapping("/apt")
@@ -46,5 +57,4 @@ public class HouseMapController {
     public ResponseEntity<HouseInfoDto> getAptName(@RequestParam("aptCode") String aptCode) throws Exception {
         return new ResponseEntity<HouseInfoDto>(haHouseMapService.getAptName(aptCode), HttpStatus.OK);
     }
-
 }

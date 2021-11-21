@@ -4,6 +4,7 @@ package com.ssafy.realestate.map.model.service;
 import com.ssafy.realestate.map.model.HouseInfoDto;
 import com.ssafy.realestate.map.model.SidoGugunCodeDto;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface HouseMapService {
@@ -11,6 +12,8 @@ public interface HouseMapService {
 	List<SidoGugunCodeDto> getSido() throws Exception;
 	List<SidoGugunCodeDto> getGugunInSido(String sido) throws Exception;
 	List<HouseInfoDto> getDongInGugun(String gugun) throws Exception;
+	List<HouseInfoDto> guApt(String gugun) throws SQLException;
 	List<HouseInfoDto> getAptInDong(String dong) throws Exception;
-	HouseInfoDto getAptName(String aptCode);
+	HouseInfoDto getAptName(String aptCode) throws SQLException;
+	List<HouseInfoDto> dongNameSearch(String dongName)throws SQLException;
 }
