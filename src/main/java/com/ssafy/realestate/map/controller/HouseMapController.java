@@ -43,7 +43,7 @@ public class HouseMapController {
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
     }
 
-    @GetMapping("/dongSearch")
+    @GetMapping("/dong-search")
     public ResponseEntity<List<HouseInfoDto>> dongNameSearch(@RequestParam("dongName") String dongName) throws Exception {
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.dongNameSearch(dongName), HttpStatus.OK);
     }
@@ -53,7 +53,7 @@ public class HouseMapController {
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInDong(dong), HttpStatus.OK);
     }
 
-    @GetMapping("/aptName")
+    @GetMapping("/apt-name")
     public ResponseEntity<HouseInfoDto> getAptName(@RequestParam("aptCode") String aptCode) throws Exception {
         return new ResponseEntity<HouseInfoDto>(haHouseMapService.getAptName(aptCode), HttpStatus.OK);
     }
