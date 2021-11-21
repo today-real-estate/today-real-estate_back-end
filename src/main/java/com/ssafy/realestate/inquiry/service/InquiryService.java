@@ -26,7 +26,7 @@ public class InquiryService {
     private final UserRepository userRepository;
 
     public List<InquiryResponseDto> findByUserId(Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(NoInquiryUserIdException::new);
+        UserEntity user = userRepository.findById(userId).orElseThrow(NoUserException::new);
         List<Inquiry> inquiries = inquiryRepository.findByUserId(user.getId());
         return inquiries.stream().map(InquiryResponseDto::from).collect(Collectors.toList());
     }
@@ -38,7 +38,7 @@ public class InquiryService {
 
     @Transactional
     public InquiryResponseDto save(InquiryRequestDto inquiryRequestDto) {
-        UserEntity user = userRepository.findById(inquiryRequestDto.getUserId()).orElseThrow(NoInquiryUserIdException::new);
+        UserEntity user = userRepository.findById(inquiryRequestDto.getUserId()).orElseThrow(NoUserException::new);
         return InquiryResponseDto.from(inquiryRepository.save(inquiryRequestDto.toSaveInquiryEntity(user)));
 
     }
