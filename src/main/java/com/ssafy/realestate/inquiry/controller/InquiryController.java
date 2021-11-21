@@ -55,7 +55,6 @@ public class InquiryController {
     }
 
     @PostMapping("/answer/{id}")
-    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<String> inquiryAnswerSave(@RequestBody InquiryAnswerDto InquiryAnswerDto) {
         inquiryService.answerSave(InquiryAnswerDto);
         return ResponseEntity.ok("Inquiry ID : "+InquiryAnswerDto.getInquiryId()+" 답변 저장 완료");

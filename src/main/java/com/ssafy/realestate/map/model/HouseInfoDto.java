@@ -8,6 +8,7 @@ import java.util.Random;
 @Getter
 @Setter
 public class HouseInfoDto {
+	private static Random random = new Random();
 
 	private int aptCode;
 
@@ -114,8 +115,7 @@ public class HouseInfoDto {
 	}
 
 	public String getImg() {
-		Random random = new Random();
-		return random.nextInt(30)+".jpg";
+		return "http://localhost:9000/images/apt-image"+random.nextInt(30)+".jpg";
 	}
 
 	public void setImg(String img) {
