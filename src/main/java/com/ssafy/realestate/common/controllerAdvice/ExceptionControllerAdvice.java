@@ -3,7 +3,6 @@ package com.ssafy.realestate.common.controllerAdvice;
 
 import com.ssafy.realestate.common.ErrorResponse;
 import com.ssafy.realestate.inquiry.exception.NoInquiryIdException;
-import com.ssafy.realestate.inquiry.exception.NoInquiryUserIdException;
 import com.ssafy.realestate.user.exception.*;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
