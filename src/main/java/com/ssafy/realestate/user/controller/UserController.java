@@ -40,8 +40,9 @@ public class UserController {
         UserResponseDto savedUser = userManagementService.save(userSignUpDto);
         return ResponseEntity.ok().body(savedUser.getId());
     }
+
     @GetMapping("/emails-check")
-    public ResponseEntity<Boolean> isDuplicatedEmail(@RequestBody Map<String,String> object) {
+    public ResponseEntity<Boolean> isDuplicatedEmail(@RequestBody Map<String, String> object) {
         return new ResponseEntity(userManagementService.validateDuplicatedEmail(object.get("userEmail")), HttpStatus.OK);
     }
 
@@ -61,14 +62,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<UserResponseDto> details(@PathVariable("id")Long id) {
+    public ResponseEntity<UserResponseDto> details(@PathVariable("id") Long id) {
         UserResponseDto userDetails = userManagementService.findById(id);
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Void> delete(@PathVariable("id")Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         userManagementService.deleteById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
