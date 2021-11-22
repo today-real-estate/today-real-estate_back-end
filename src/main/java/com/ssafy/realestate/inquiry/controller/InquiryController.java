@@ -56,19 +56,19 @@ public class InquiryController {
     @PostMapping("/answer")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<String> inquiryAnswerSave(@RequestBody InquiryAnswerDto InquiryAnswerDto) {
-        return ResponseEntity.ok("Inquiry ID : " + inquiryService.answerSave(InquiryAnswerDto) + " 답변 저장 완료");
+        return ResponseEntity.ok("Inquiry Answer ID : " + inquiryService.answerSave(InquiryAnswerDto) + " 답변 저장 완료");
     }
 
     @DeleteMapping("/answer")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<String> inquiryAnswerDelete(@RequestBody Map<String, Long> object) {
-        return ResponseEntity.ok("Inquiry ID : " + inquiryService.answerDelete(object.get("id"), object.get("inquiryId")) + " 답변 삭제 완료");
+        return ResponseEntity.ok("Inquiry Answer ID : " + inquiryService.answerDelete(object.get("id"), object.get("inquiryId")) + " 답변 삭제 완료");
     }
 
-    @PutMapping("/answer{id}")
+    @PutMapping("/answer")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<String> inquiryAnswerUpdate(@RequestBody InquiryAnswerUpdateDto inquiryAnswerUpdateDto) {
-        return ResponseEntity.ok("Inquiry ID : " + inquiryService.answerUpdate(inquiryAnswerUpdateDto) + " 답변 수정 완료");
+        return ResponseEntity.ok("Inquiry Answer ID : " + inquiryService.answerUpdate(inquiryAnswerUpdateDto) + " 답변 수정 완료");
     }
 
 }
