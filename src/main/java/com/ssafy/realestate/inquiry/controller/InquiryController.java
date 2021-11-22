@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -58,10 +59,10 @@ public class InquiryController {
         return ResponseEntity.ok("Inquiry ID : " + inquiryService.answerSave(InquiryAnswerDto) + " 답변 저장 완료");
     }
 
-    @DeleteMapping("/answer/{id}")
+    @DeleteMapping("/answer")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<String> inquiryAnswerdelete(@PathVariable("id") Long id) {
-        return ResponseEntity.ok("Inquiry ID : " + inquiryService.answerDelete(id) + " 답변 삭제 완료");
+    public ResponseEntity<String> inquiryAnswerDelete(@RequestBody Map<String, Long> object) {
+        return ResponseEntity.ok("Inquiry ID : " + inquiryService.answerDelete(object.get("id"), object.get("inquiryId")) + " 답변 삭제 완료");
     }
 
     @PutMapping("/answer{id}")
