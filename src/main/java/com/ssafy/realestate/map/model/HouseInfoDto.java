@@ -115,7 +115,7 @@ public class HouseInfoDto {
 	}
 
 	public String getImg() {
-		return "http://localhost:9000/images/apt-image"+random.nextInt(30)+".jpg";
+		return "http://localhost:9000/images/apt-image"+random.nextInt((30 + 1) + 1) +".jpg";
 	}
 
 	public void setImg(String img) {
