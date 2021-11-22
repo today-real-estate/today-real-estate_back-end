@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class InquiryAnswer extends BaseTimeEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,7 +21,7 @@ public class InquiryAnswer extends BaseTimeEntity{
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
-    @JsonBackReference(value = "inquiry-inquiryAnswer")
+    @JsonBackReference(value = "inquiry-inquiry_answer")
     private Inquiry inquiry;
 
     @NotBlank(message = "내용을 입력하세요")

@@ -3,7 +3,6 @@ package com.ssafy.realestate.inquiry.enitity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.realestate.common.BaseTimeEntity;
-import com.ssafy.realestate.user.entity.UserAuthority;
 import com.ssafy.realestate.user.entity.UserEntity;
 import lombok.*;
 
@@ -38,9 +37,9 @@ public class Inquiry extends BaseTimeEntity {
 
     private boolean isComplete;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "inquiry_answer_id", referencedColumnName = "id")
-    @JsonManagedReference(value = "inquiry-inquiryAnswer")
-    private InquiryAnswer inquiryAnswer;
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "inquiry_id", referencedColumnName = "id")
+    @JsonManagedReference(value = "inquiry-inquiry_answer")
+    private List<InquiryAnswer> inquiryAnswer;
 
 }

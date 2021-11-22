@@ -1,11 +1,10 @@
 package com.ssafy.realestate.inquiry.service;
 
-import com.ssafy.realestate.inquiry.dto.InquiryAnswerDto;
-import com.ssafy.realestate.inquiry.dto.InquiryRequestDto;
-import com.ssafy.realestate.inquiry.dto.InquiryResponseDto;
-import com.ssafy.realestate.inquiry.dto.InquiryUpdateDto;
+import com.ssafy.realestate.inquiry.dto.*;
 import com.ssafy.realestate.inquiry.enitity.Inquiry;
+import com.ssafy.realestate.inquiry.enitity.InquiryAnswer;
 import com.ssafy.realestate.inquiry.exception.NoInquiryIdException;
+import com.ssafy.realestate.inquiry.repository.InquiryAnswerRepository;
 import com.ssafy.realestate.inquiry.repository.InquiryRepository;
 import com.ssafy.realestate.user.entity.UserEntity;
 import com.ssafy.realestate.user.exception.NoUserException;
@@ -23,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InquiryService {
     private final InquiryRepository inquiryRepository;
+    private final InquiryAnswerRepository inquiryAnswerRepository;
     private final UserRepository userRepository;
 
     public List<InquiryResponseDto> findByUserId(Long userId) {
@@ -60,12 +60,33 @@ public class InquiryService {
         return InquiryResponseDto.from(inquiryRepository.save(inquiry));
     }
 
+    public Long answerUpdate(InquiryAnswerUpdateDto inquiryAnswerUpdateDto) {
+        InquiryAnswer update = inquiryAnswerUpdateDto.toUpdateInquiryAnswerEntity();
+        InquiryAnswer origin = inquiryAnswerRepository.findById(inquiryAnswerUpdateDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("답글 ID가 존재하지 않습니다."));
+
+        InquiryAnswer inquiryAnswer = InquiryAnswer.builder()
+                .id(origin.getId())
+                .inquiry(origin.getInquiry())
+                .answerContent(update.getAnswerContent())
+                .build();
+        return inquiryAnswerRepository.save(inquiryAnswer).getId();
+    }
+
     @Transactional
     public void deleteById(Long id) {
         Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(NoInquiryIdException::new);
         inquiryRepository.deleteById(inquiry.getId());
     }
 
-    public void answerSave(InquiryAnswerDto inquiryAnswerDto) {
+    public Long answerSave(InquiryAnswerDto inquiryAnswerDto) {
+        Inquiry inquiry = inquiryRepository.findById(inquiryAnswerDto.getInquiryId()).orElseThrow(NoInquiryIdException::new);
+        InquiryAnswer inquiryAnswer = inquiryAnswerRepository.save(inquiryAnswerDto.toSaveInquiryAnswerEntity(inquiry));
+        return inquiryAnswer.getId();
+    }
+
+    public Long answerDelete(Long id) {
+        inquiryAnswerRepository.deleteById(id);
+        return id;
     }
 }
