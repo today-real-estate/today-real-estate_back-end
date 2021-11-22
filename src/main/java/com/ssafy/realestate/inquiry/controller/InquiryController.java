@@ -6,6 +6,7 @@ import com.ssafy.realestate.user.annotation.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Delete;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,14 +44,14 @@ public class InquiryController {
     @PutMapping("/update")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<String> update(@RequestBody InquiryUpdateDto inquiryUpdateDto) {
-        return ResponseEntity.ok("id :" + inquiryService.update(inquiryUpdateDto).getId() + " 수정완료");
+        return new ResponseEntity("id :" + inquiryService.update(inquiryUpdateDto).getId() + " 수정완료",HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         inquiryService.deleteById(id);
-        return ResponseEntity.ok("id :" + id + " 삭제완료");
+        return new ResponseEntity("id :" + id + " 삭제완료", HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/answer")
