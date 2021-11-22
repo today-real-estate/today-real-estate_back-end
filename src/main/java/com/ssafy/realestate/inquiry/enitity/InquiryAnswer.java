@@ -12,14 +12,14 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class InquiryAnswer extends BaseTimeEntity{
+public class InquiryAnswer extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
     @JsonBackReference(value = "inquiry-inquiry_answer")
     private Inquiry inquiry;
