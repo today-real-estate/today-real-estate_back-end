@@ -2,7 +2,6 @@ package com.ssafy.realestate.inquiry.dto;
 
 import com.ssafy.realestate.inquiry.enitity.Inquiry;
 import com.ssafy.realestate.inquiry.enitity.InquiryAnswer;
-import com.ssafy.realestate.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
