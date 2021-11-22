@@ -18,13 +18,14 @@ public class UserResponseDto {
     private String userEmail;
     private String userName;
     private String nickname;
+    private String recentSearch;
     private String profileImage;
     private List<UserAuthority> authorities;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
     public static UserResponseDto from(UserEntity user) {
-        return new UserResponseDto(user.getId(), user.getUserEmail(), user.getUserName(), user.getNickname(), "",
+        return new UserResponseDto(user.getId(), user.getUserEmail(), user.getUserName(), user.getNickname(), user.getRecentSearch(), "",
                 user.getAuthorities(), user.getCreatedDate(), user.getModifiedDate());
     }
 }
