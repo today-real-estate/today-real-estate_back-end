@@ -4,7 +4,6 @@ import com.ssafy.realestate.inquiry.enitity.Inquiry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.sql.In;
 
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;

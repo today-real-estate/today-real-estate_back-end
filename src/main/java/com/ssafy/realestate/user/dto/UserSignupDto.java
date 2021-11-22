@@ -35,7 +35,6 @@ public class UserSignupDto {
                 .password(password)
                 .userName(userName)
                 .nickname(nickname)
-
                 .build();
         return userEntity;
     }

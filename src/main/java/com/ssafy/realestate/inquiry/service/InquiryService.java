@@ -54,12 +54,14 @@ public class InquiryService {
                 .inquiryType(updateInquiry.getInquiryType())
                 .title(updateInquiry.getTitle())
                 .content(updateInquiry.getContent())
+                .isComplete(originInquiry.isComplete())
                 .user(originInquiry.getUser())
                 .inquiryAnswer(originInquiry.getInquiryAnswer())
                 .build();
         return InquiryResponseDto.from(inquiryRepository.save(inquiry));
     }
 
+    @Transactional
     public Long answerUpdate(InquiryAnswerUpdateDto inquiryAnswerUpdateDto) {
         InquiryAnswer update = inquiryAnswerUpdateDto.toUpdateInquiryAnswerEntity();
         InquiryAnswer origin = inquiryAnswerRepository.findById(inquiryAnswerUpdateDto.getId())
@@ -79,14 +81,37 @@ public class InquiryService {
         inquiryRepository.deleteById(inquiry.getId());
     }
 
+    @Transactional
     public Long answerSave(InquiryAnswerDto inquiryAnswerDto) {
         Inquiry inquiry = inquiryRepository.findById(inquiryAnswerDto.getInquiryId()).orElseThrow(NoInquiryIdException::new);
         InquiryAnswer inquiryAnswer = inquiryAnswerRepository.save(inquiryAnswerDto.toSaveInquiryAnswerEntity(inquiry));
+        isCompleteInquiryUpdate(inquiry.getId(), true);
         return inquiryAnswer.getId();
     }
 
-    public Long answerDelete(Long id) {
+    @Transactional
+    public Long answerDelete(Long id, Long inquiryId) {
         inquiryAnswerRepository.deleteById(id);
+        Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(NoInquiryIdException::new);
+        if (inquiry.getInquiryAnswer().size() == 1) {
+            isCompleteInquiryUpdate(inquiryId, false);
+        }
         return id;
+    }
+
+    @Transactional
+    public void isCompleteInquiryUpdate(Long id, Boolean isComplete) {
+        Inquiry originInquiry = inquiryRepository.findById(id)
+                .orElseThrow(NoInquiryIdException::new);
+        Inquiry inquiry = Inquiry.builder()
+                .id(originInquiry.getId())
+                .inquiryType(originInquiry.getInquiryType())
+                .title(originInquiry.getTitle())
+                .content(originInquiry.getContent())
+                .isComplete(isComplete)
+                .user(originInquiry.getUser())
+                .inquiryAnswer(originInquiry.getInquiryAnswer())
+                .build();
+        InquiryResponseDto.from(inquiryRepository.save(inquiry));
     }
 }
