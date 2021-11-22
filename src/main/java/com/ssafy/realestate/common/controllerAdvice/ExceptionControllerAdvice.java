@@ -73,8 +73,8 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> exception(Exception e) {
+    public ResponseEntity<ErrorResponse> exception(Exception e) {
         log.error(e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예상치 못한 에러.");
+        return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
 }
