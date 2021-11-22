@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InquiryAnswerUpdateDto {
-    
+
     @NotBlank(message = "답글 id가 필요합니다.")
     private Long id;
 
