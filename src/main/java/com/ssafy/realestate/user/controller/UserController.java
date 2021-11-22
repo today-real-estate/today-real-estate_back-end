@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.ssafy.realestate.user.jwt.AuthInterceptor.TOKEN_HEADER;
@@ -32,7 +33,8 @@ public class UserController {
         String jwt = tokenProvider.createToken(userEntity);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(AuthInterceptor.AUTHORIZATION_HEADER, TOKEN_HEADER + jwt);
-        return new ResponseEntity<>(new UserTokenInfoDto(userEntity.getId(), userEntity.getUserName(), userEntity.getUserEmail(), userEntity.getNickname(), jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(new UserTokenInfoDto(userEntity.getId(), userEntity.getUserName(), userEntity.getUserEmail(),
+                userEntity.getNickname(),userEntity.getRecentSearch(), jwt), httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping("/signup")
@@ -72,5 +74,14 @@ public class UserController {
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         userManagementService.deleteById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/recent-search")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<Map<String,String>> recentSearch(@RequestBody UserRecentSearchDto recentSearchDto){
+        userManagementService.recentSearch(recentSearchDto);
+        Map<String,String> recentMap = new HashMap<>();
+        recentMap.put("dongCode",recentSearchDto.getDongCode());
+        return new ResponseEntity(recentMap,HttpStatus.OK);
     }
 }

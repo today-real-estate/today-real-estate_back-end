@@ -10,6 +10,7 @@ public class UserTokenInfoDto {
     private String userName;
     private String userEmail;
     private String nickname;
+    private String recentSearch;
     private String token;
 
 }
