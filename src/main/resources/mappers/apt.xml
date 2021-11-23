@@ -93,6 +93,24 @@
 		where aa.recentPrice is not null;
 	</select>
 
+	<select id="recommend" parameterType="string" resultType="houseInfoDto">
+		select *
+		from
+		(select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+		(select dealAmount from housedeal
+		where aptCode = h.aptCode
+		and no =
+		(select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from houseinfo h
+		join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where dongName LIKE CONCAT('%', #{dongName}, '%')
+		order by rand() limit 4) aa
+		where aa.recentPrice is not null;
+	</select>
+
 
 	<select id="likedAptList"  resultType="houseInfoDto">
 		select *

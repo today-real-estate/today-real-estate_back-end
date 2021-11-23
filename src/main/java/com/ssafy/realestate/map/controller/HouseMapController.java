@@ -48,6 +48,10 @@ public class HouseMapController {
     public ResponseEntity<List<HouseInfoDto>> dongNameSearch(@RequestParam("dongName") String dongName) throws Exception {
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.dongNameSearch(dongName), HttpStatus.OK);
     }
+    @GetMapping("/recommend")
+    public ResponseEntity<List<HouseInfoDto>> recommend(@RequestParam("dongName") String dongName) throws Exception {
+        return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.recommend(dongName), HttpStatus.OK);
+    }
 
     @GetMapping("/apt")
     public ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong) throws Exception {
@@ -64,4 +68,5 @@ public class HouseMapController {
         log.info(aptCodes.toString());
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.likedAptList(aptCodes), HttpStatus.OK);
     }
+
 }

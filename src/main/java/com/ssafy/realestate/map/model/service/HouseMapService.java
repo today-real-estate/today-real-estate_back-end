@@ -17,4 +17,5 @@ public interface HouseMapService {
 	HouseInfoDto getAptName(String aptCode) throws SQLException;
 	List<HouseInfoDto> dongNameSearch(String dongName)throws SQLException;
     List<HouseInfoDto> likedAptList(List<String> aptCodes)throws SQLException;
+    List<HouseInfoDto> recommend(String dongName)throws SQLException;
 }
