@@ -25,10 +25,6 @@ public class UserResponseDto {
 
     public static UserResponseDto from(UserEntity user) {
         return new UserResponseDto(user.getId(), user.getUserEmail(), user.getUserName(), user.getNickname(), user.getRecentSearch(), "",
-                authorityTransfer(user.getAuthorities().get(0)), user.getCreatedDate(), user.getModifiedDate());
-    }
-
-    private static Long authorityTransfer(UserAuthority userAuthority) {
-        return userAuthority.getAuth().getId();
+                user.getAuthorities().get(0).getAuth().getId(), user.getCreatedDate(), user.getModifiedDate());
     }
 }
