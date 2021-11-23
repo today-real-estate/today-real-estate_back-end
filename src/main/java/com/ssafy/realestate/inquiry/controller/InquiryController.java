@@ -5,7 +5,6 @@ import com.ssafy.realestate.inquiry.service.InquiryService;
 import com.ssafy.realestate.user.annotation.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
