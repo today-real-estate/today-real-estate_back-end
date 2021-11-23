@@ -4,6 +4,7 @@ package com.ssafy.realestate.map.controller;
 import com.ssafy.realestate.map.model.HouseInfoDto;
 import com.ssafy.realestate.map.model.SidoGugunCodeDto;
 import com.ssafy.realestate.map.model.service.HouseMapService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/map")
 public class HouseMapController {
@@ -56,5 +57,11 @@ public class HouseMapController {
     @GetMapping("/apt-name")
     public ResponseEntity<HouseInfoDto> getAptName(@RequestParam("aptCode") String aptCode) throws Exception {
         return new ResponseEntity<HouseInfoDto>(haHouseMapService.getAptName(aptCode), HttpStatus.OK);
+    }
+
+    @GetMapping("/liked-apt-codes")
+    public ResponseEntity<List<HouseInfoDto>> likedAptList(@RequestParam("aptCodes") List<String> aptCodes) throws Exception {
+        log.info(aptCodes.toString());
+        return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.likedAptList(aptCodes), HttpStatus.OK);
     }
 }

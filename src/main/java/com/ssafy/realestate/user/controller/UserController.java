@@ -80,7 +80,7 @@ public class UserController {
     public ResponseEntity<Map<String,String>> recentSearch(@RequestBody UserRecentSearchDto recentSearchDto){
         userManagementService.recentSearch(recentSearchDto);
         Map<String,String> recentMap = new HashMap<>();
-        recentMap.put("dongCode",recentSearchDto.getDongCode());
+        recentMap.put("dongName",recentSearchDto.getDongName());
         return new ResponseEntity(recentMap,HttpStatus.OK);
     }
 }
