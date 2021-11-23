@@ -4,7 +4,10 @@ package com.ssafy.realestate.likeApt.service;
 import com.ssafy.realestate.likeApt.dto.LikeAptRequestDto;
 import com.ssafy.realestate.likeApt.dto.LikeAptResponseDto;
 import com.ssafy.realestate.likeApt.entity.LikeApt;
+import com.ssafy.realestate.likeApt.exception.IsEmptyLikeAptException;
 import com.ssafy.realestate.likeApt.repository.LikeAptRepository;
+import com.ssafy.realestate.map.model.HouseInfoDto;
+import com.ssafy.realestate.map.model.service.HouseMapService;
 import com.ssafy.realestate.user.entity.UserEntity;
 import com.ssafy.realestate.user.exception.NoUserFoundException;
 import com.ssafy.realestate.user.repository.UserRepository;
@@ -13,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +27,7 @@ import java.util.stream.Collectors;
 public class LikeAptService {
     private final LikeAptRepository likeAptRepository;
     private final UserRepository userRepository;
+    private final HouseMapService houseMapService;
 
     public List<LikeAptResponseDto> findAll() {
         List<LikeApt> likeAptList = likeAptRepository.findAll();
@@ -29,11 +35,16 @@ public class LikeAptService {
     }
 
 
-    public List<LikeAptResponseDto> findByUserId(Long id) {
+    public List<HouseInfoDto> findByUserId(Long id) throws SQLException {
         List<LikeApt> userLikeAptList = likeAptRepository.findByUserId(id);
-        return userLikeAptList.stream()
-                .map(LikeAptResponseDto::from)
-                .collect(Collectors.toList());
+        if (userLikeAptList.isEmpty()) {
+            throw new IsEmptyLikeAptException();
+        }
+        List<String> aptCode = new ArrayList<>();
+        for (LikeApt likeApt : userLikeAptList) {
+            aptCode.add(likeApt.getAptCode());
+        }
+        return houseMapService.likedAptList(aptCode);
     }
 
     @Transactional
@@ -47,10 +58,10 @@ public class LikeAptService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        if (!likeAptRepository.findById(id).isPresent()) {
-            throw new IllegalArgumentException("존재하지 않는 관심 목록 입니다.");
+    public void delete(LikeAptRequestDto likeAptRequestDto) {
+        if(likeAptRepository.findByUserIdAndAptCode(likeAptRequestDto.getUserId(),likeAptRequestDto.getAptCode()).isEmpty()){
+            throw new IllegalArgumentException("존재하지 않는 관심 목록입니다");
         }
-        likeAptRepository.deleteById(id);
+        likeAptRepository.deleteByUserIdByAptCode(likeAptRequestDto.getUserId(),likeAptRequestDto.getAptCode());
     }
 }

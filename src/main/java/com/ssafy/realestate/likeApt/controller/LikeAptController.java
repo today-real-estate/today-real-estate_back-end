@@ -5,6 +5,7 @@ import com.ssafy.realestate.likeApt.dto.LikeAptRequestDto;
 import com.ssafy.realestate.likeApt.dto.LikeAptResponseDto;
 import com.ssafy.realestate.likeApt.entity.LikeApt;
 import com.ssafy.realestate.likeApt.service.LikeAptService;
+import com.ssafy.realestate.map.model.HouseInfoDto;
 import com.ssafy.realestate.user.annotation.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -31,9 +33,8 @@ public class LikeAptController {
 
     @GetMapping("/{id}")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<List<LikeApt>> getUserLikeApt(@PathVariable Long id) {
-        List<LikeAptResponseDto> userLikeAptList = likeAptService.findByUserId(id);
-        return new ResponseEntity(userLikeAptList, HttpStatus.OK);
+    public ResponseEntity<List<HouseInfoDto>> getUserLikeApt(@PathVariable Long id) throws SQLException {
+        return new ResponseEntity(likeAptService.findByUserId(id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -43,10 +44,10 @@ public class LikeAptController {
         return ResponseEntity.created(URI.create("/" + savedLikeApt.getId())).build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Long> deleteLikeApt(@PathVariable Long id) {
-        likeAptService.delete(id);
+    public ResponseEntity<Long> deleteLikeApt(@RequestBody LikeAptRequestDto likeAptRequestDto) {
+        likeAptService.delete(likeAptRequestDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
