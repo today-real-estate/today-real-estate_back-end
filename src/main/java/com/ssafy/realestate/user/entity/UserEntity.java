@@ -37,8 +37,7 @@ public class UserEntity extends BaseTimeEntity {
     @NotBlank(message = "닉네임을 입력하세요.")
     @Length(min = 2, max = 8, message = "2~10자리의 닉네임을 입력하세요.")
     private String nickname;
-
-    @NotBlank(message = "Dong 코드가 필요합니다.")
+    
     private String recentSearch;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
