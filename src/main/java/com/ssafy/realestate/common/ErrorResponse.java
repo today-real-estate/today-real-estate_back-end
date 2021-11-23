@@ -1,7 +1,6 @@
 package com.ssafy.realestate.common;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 @Getter
@@ -15,7 +14,5 @@ public class ErrorResponse {
         super();
         this.status = status;
         this.msg = msg;
-
     }
-
 }

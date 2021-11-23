@@ -3,6 +3,7 @@ package com.ssafy.realestate.user.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.realestate.common.BaseTimeEntity;
 import com.ssafy.realestate.inquiry.enitity.Inquiry;
+import com.ssafy.realestate.likeApt.entity.LikeApt;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -49,5 +50,10 @@ public class UserEntity extends BaseTimeEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonManagedReference(value = "user-inquiry")
     private List<Inquiry> inquiries;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonManagedReference(value = "user-liked")
+    private List<LikeApt> likedAptCodes;
 
 }

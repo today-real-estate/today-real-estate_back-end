@@ -16,13 +16,8 @@ public class UserTokenInfoDto {
     private String token;
     private Long authority;
 
-    public static UserTokenInfoDto from(UserEntity user,String token) {
+    public static UserTokenInfoDto from(UserEntity user, String token) {
         return new UserTokenInfoDto(user.getId(), user.getUserEmail(), user.getUserName(), user.getNickname(), user.getRecentSearch(), token,
-                authorityTransfer(user.getAuthorities().get(0)) );
+                user.getAuthorities().get(0).getAuth().getId());
     }
-
-    private static Long authorityTransfer(UserAuthority userAuthority) {
-       return userAuthority.getAuth().getId();
-    }
-
 }
