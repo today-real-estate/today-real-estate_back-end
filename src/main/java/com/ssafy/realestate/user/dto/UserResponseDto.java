@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -20,12 +19,16 @@ public class UserResponseDto {
     private String nickname;
     private String recentSearch;
     private String profileImage;
-    private List<UserAuthority> authorities;
+    private Long authority;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
     public static UserResponseDto from(UserEntity user) {
         return new UserResponseDto(user.getId(), user.getUserEmail(), user.getUserName(), user.getNickname(), user.getRecentSearch(), "",
-                user.getAuthorities(), user.getCreatedDate(), user.getModifiedDate());
+                authorityTransfer(user.getAuthorities().get(0)), user.getCreatedDate(), user.getModifiedDate());
+    }
+
+    private static Long authorityTransfer(UserAuthority userAuthority) {
+        return userAuthority.getAuth().getId();
     }
 }

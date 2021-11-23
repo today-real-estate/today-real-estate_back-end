@@ -33,8 +33,7 @@ public class UserController {
         String jwt = tokenProvider.createToken(userEntity);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(AuthInterceptor.AUTHORIZATION_HEADER, TOKEN_HEADER + jwt);
-        return new ResponseEntity<>(new UserTokenInfoDto(userEntity.getId(), userEntity.getUserName(), userEntity.getUserEmail(),
-                userEntity.getNickname(),userEntity.getRecentSearch(), jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(UserTokenInfoDto.from(userEntity,jwt), httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping("/signup")
