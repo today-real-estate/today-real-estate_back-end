@@ -53,4 +53,9 @@ public class HouseMapServiceImpl implements HouseMapService {
 	public List<HouseInfoDto> dongNameSearch(String dongName) throws SQLException {
 		return sqlSession.getMapper(HouseMapMapper.class).dongNameSearch(dongName);
 	}
+
+	@Override
+	public List<HouseInfoDto> likedAptList(List<String> aptCodes) throws SQLException {
+		return sqlSession.getMapper(HouseMapMapper.class).likedAptList(aptCodes);
+	}
 }

@@ -92,7 +92,7 @@ public class UserManagementService {
                 .password(originUser.getPassword())
                 .userName(originUser.getUserName())
                 .nickname(originUser.getNickname())
-                .recentSearch(recentSearchDto.getDongCode())
+                .recentSearch(recentSearchDto.getDongName())
                 .authorities(originUser.getAuthorities())
                 .inquiries(originUser.getInquiries())
                 .build();
