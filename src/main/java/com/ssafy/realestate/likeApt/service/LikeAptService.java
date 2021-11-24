@@ -40,7 +40,7 @@ public class LikeAptService {
     public List<HouseInfoDto> findByUserIdHouseList(Long id) throws SQLException {
         List<LikeApt> userLikeAptList = likeAptRepository.findByUserId(id);
         if (userLikeAptList.isEmpty()) {
-            throw new IsEmptyLikeAptException();
+           return null;
         }
         List<String> aptCode = new ArrayList<>();
         for (LikeApt likeApt : userLikeAptList) {
@@ -52,7 +52,7 @@ public class LikeAptService {
     public List<LikeAptResponseDto> findByUserId(Long id) {
         List<LikeApt> userLikeAptList = likeAptRepository.findByUserId(id);
         if (userLikeAptList.isEmpty()) {
-            throw new IsEmptyLikeAptException();
+            return null;
         }
         return userLikeAptList.stream().map(LikeAptResponseDto::from).collect(Collectors.toList());
     }
