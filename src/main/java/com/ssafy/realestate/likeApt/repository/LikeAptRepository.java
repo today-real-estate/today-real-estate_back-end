@@ -17,6 +17,6 @@ public interface LikeAptRepository extends JpaRepository<LikeApt, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "delete from like_apt where user_id=:userId and apt_code=:aptCode", nativeQuery=true)
+    @Query(value = "delete from like_apt where user_id=:userId and apt_code=:aptCode", nativeQuery = true)
     void deleteByUserIdByAptCode(Long userId, String aptCode);
 }

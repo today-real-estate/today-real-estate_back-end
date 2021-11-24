@@ -8,7 +8,9 @@ import com.ssafy.realestate.likeApt.exception.IsEmptyLikeAptException;
 import com.ssafy.realestate.likeApt.repository.LikeAptRepository;
 import com.ssafy.realestate.map.model.HouseInfoDto;
 import com.ssafy.realestate.map.model.service.HouseMapService;
+import com.ssafy.realestate.notice.dto.NoticeResponseDto;
 import com.ssafy.realestate.user.entity.UserEntity;
+import com.ssafy.realestate.user.exception.NoUserException;
 import com.ssafy.realestate.user.exception.NoUserFoundException;
 import com.ssafy.realestate.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +37,7 @@ public class LikeAptService {
     }
 
 
-    public List<HouseInfoDto> findByUserId(Long id) throws SQLException {
+    public List<HouseInfoDto> findByUserIdHouseList(Long id) throws SQLException {
         List<LikeApt> userLikeAptList = likeAptRepository.findByUserId(id);
         if (userLikeAptList.isEmpty()) {
             throw new IsEmptyLikeAptException();
@@ -47,10 +49,19 @@ public class LikeAptService {
         return houseMapService.likedAptList(aptCode);
     }
 
+    public List<LikeAptResponseDto> findByUserId(Long id) {
+        List<LikeApt> userLikeAptList = likeAptRepository.findByUserId(id);
+        if (userLikeAptList.isEmpty()) {
+            throw new IsEmptyLikeAptException();
+        }
+        return userLikeAptList.stream().map(LikeAptResponseDto::from).collect(Collectors.toList());
+    }
+
+
     @Transactional
     public LikeAptResponseDto addLikeApt(LikeAptRequestDto likeAptRequestDto) {
         UserEntity user = userRepository.findById(likeAptRequestDto.getUserId())
-                .orElseThrow(NoUserFoundException::new);
+                .orElseThrow(NoUserException::new);
         return LikeAptResponseDto.from(likeAptRepository.save(LikeApt.builder()
                 .user(user)
                 .aptCode(likeAptRequestDto.getAptCode())
@@ -59,9 +70,9 @@ public class LikeAptService {
 
     @Transactional
     public void delete(LikeAptRequestDto likeAptRequestDto) {
-        if(likeAptRepository.findByUserIdAndAptCode(likeAptRequestDto.getUserId(),likeAptRequestDto.getAptCode()).isEmpty()){
+        if (likeAptRepository.findByUserIdAndAptCode(likeAptRequestDto.getUserId(), likeAptRequestDto.getAptCode()).isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 관심 목록입니다");
         }
-        likeAptRepository.deleteByUserIdByAptCode(likeAptRequestDto.getUserId(),likeAptRequestDto.getAptCode());
+        likeAptRepository.deleteByUserIdByAptCode(likeAptRequestDto.getUserId(), likeAptRequestDto.getAptCode());
     }
 }
