@@ -1,6 +1,5 @@
 package com.ssafy.realestate.user.dto;
 
-import com.ssafy.realestate.user.entity.UserAuthority;
 import com.ssafy.realestate.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
