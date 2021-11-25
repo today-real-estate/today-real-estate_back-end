@@ -71,12 +71,7 @@ public class HouseMapController {
         return new ResponseEntity<HouseInfoDto>(haHouseMapService.getAptName(aptCode), HttpStatus.OK);
     }
 
-//    @GetMapping("/user")
-//    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-//    public ResponseEntity<List<LikedHouseInfoDto>> likedAptList(@RequestParam("userId") Long userId) throws Exception {
-//        List<LikeAptResponseDto> likeApt = likeAptService.findByUserId(userId);
-//        return new ResponseEntity<List<LikedHouseInfoDto>>(haHouseMapService.likedAptList(aptCodes), HttpStatus.OK);
-//    }
+
 
     @GetMapping("/dong-search/user")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
@@ -110,7 +105,7 @@ public class HouseMapController {
         return new ResponseEntity<List<LikedHouseInfoDto>>(likedHouseInfoDto, HttpStatus.OK);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/apt/user")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<List<LikedHouseInfoDto>> getAptInDongLike(@RequestParam("dong") String dong, @RequestParam("userId") Long userId) throws Exception {
         HashMap<Integer, Boolean> map = likedStatusSet(userId);

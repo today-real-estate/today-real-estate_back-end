@@ -19,8 +19,8 @@ public interface HouseMapMapper {
 	List<HouseInfoDto> getAptInDong(String dong) throws SQLException;
     HouseInfoDto getAptName(String aptCode)throws SQLException;
 	List<HouseInfoDto> dongNameSearch(String dongName)throws SQLException;
-    List<LikedHouseInfoDto> likedAptList(List<String> aptCodes)throws SQLException;
 	List<HouseInfoDto> recommend(String dongName)throws SQLException;
+	List<LikedHouseInfoDto> likedAptList(List<String> aptCodes)throws SQLException;
 	List<LikedHouseInfoDto> likeDongNameSearch(String dongName)throws SQLException;
 	List<LikedHouseInfoDto> guAptLiked(String gugun)throws SQLException;
 	List<LikedHouseInfoDto> getAptInDongLike(String dong)throws SQLException;
