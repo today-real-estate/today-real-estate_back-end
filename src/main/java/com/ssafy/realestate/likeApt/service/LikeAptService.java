@@ -4,14 +4,11 @@ package com.ssafy.realestate.likeApt.service;
 import com.ssafy.realestate.likeApt.dto.LikeAptRequestDto;
 import com.ssafy.realestate.likeApt.dto.LikeAptResponseDto;
 import com.ssafy.realestate.likeApt.entity.LikeApt;
-import com.ssafy.realestate.likeApt.exception.IsEmptyLikeAptException;
 import com.ssafy.realestate.likeApt.repository.LikeAptRepository;
-import com.ssafy.realestate.map.model.HouseInfoDto;
+import com.ssafy.realestate.map.model.LikedHouseInfoDto;
 import com.ssafy.realestate.map.model.service.HouseMapService;
-import com.ssafy.realestate.notice.dto.NoticeResponseDto;
 import com.ssafy.realestate.user.entity.UserEntity;
 import com.ssafy.realestate.user.exception.NoUserException;
-import com.ssafy.realestate.user.exception.NoUserFoundException;
 import com.ssafy.realestate.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,17 +33,21 @@ public class LikeAptService {
         return likeAptList.stream().map(LikeAptResponseDto::from).collect(Collectors.toList());
     }
 
-
-    public List<HouseInfoDto> findByUserIdHouseList(Long id) throws SQLException {
+    public List<LikedHouseInfoDto> findByUserIdHouseList(Long id) throws SQLException {
         List<LikeApt> userLikeAptList = likeAptRepository.findByUserId(id);
         if (userLikeAptList.isEmpty()) {
-           return null;
+            return null;
         }
         List<String> aptCode = new ArrayList<>();
         for (LikeApt likeApt : userLikeAptList) {
             aptCode.add(likeApt.getAptCode());
         }
-        return houseMapService.likedAptList(aptCode);
+        List<LikedHouseInfoDto> likedHouseInfoDto = houseMapService.likedAptList(aptCode);
+
+        for (LikedHouseInfoDto l : likedHouseInfoDto) {
+            l.setLikedStatus(true);
+        }
+        return likedHouseInfoDto;
     }
 
     public List<LikeAptResponseDto> findByUserId(Long id) {
@@ -56,11 +57,12 @@ public class LikeAptService {
         }
         return userLikeAptList.stream().map(LikeAptResponseDto::from).collect(Collectors.toList());
     }
+
     @Transactional
     public int addLikeApt(LikeAptRequestDto likeAptRequestDto) {
         UserEntity user = userRepository.findById(likeAptRequestDto.getUserId())
                 .orElseThrow(NoUserException::new);
-        return likeAptRepository.saveLikeAptCode(likeAptRequestDto.getUserId(),likeAptRequestDto.getAptCode());
+        return likeAptRepository.saveLikeAptCode(likeAptRequestDto.getUserId(), likeAptRequestDto.getAptCode());
     }
 
     @Transactional

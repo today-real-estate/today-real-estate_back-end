@@ -56,7 +56,7 @@ public class HouseMapServiceImpl implements HouseMapService {
     }
 
     @Override
-    public List<HouseInfoDto> likedAptList(List<String> aptCodes) throws SQLException {
+    public List<LikedHouseInfoDto> likedAptList(List<String> aptCodes) throws SQLException {
         return sqlSession.getMapper(HouseMapMapper.class).likedAptList(aptCodes);
     }
 

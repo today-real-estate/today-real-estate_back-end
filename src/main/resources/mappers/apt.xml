@@ -118,7 +118,7 @@
     </select>
 
 
-    <select id="likedAptList" resultType="houseInfoDto">
+    <select id="likedAptList" resultType="LikedHouseInfoDto">
         select *
         from
         (select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname,
