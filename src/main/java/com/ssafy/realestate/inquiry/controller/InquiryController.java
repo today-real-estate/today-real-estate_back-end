@@ -43,7 +43,7 @@ public class InquiryController {
     @PutMapping("/update")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<String> update(@RequestBody InquiryUpdateDto inquiryUpdateDto) {
-        return new ResponseEntity("id :" + inquiryService.update(inquiryUpdateDto).getId() + " 수정완료",HttpStatus.OK);
+        return new ResponseEntity("id :" + inquiryService.update(inquiryUpdateDto).getId() + " 수정완료", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -51,6 +51,12 @@ public class InquiryController {
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         inquiryService.deleteById(id);
         return new ResponseEntity("id :" + id + " 삭제완료", HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
+    public ResponseEntity<List<InquiryResponseDto>> findAll() {
+        return ResponseEntity.ok(inquiryService.findAll());
     }
 
     @PostMapping("/answer")

@@ -114,4 +114,9 @@ public class InquiryService {
                 .build();
         InquiryResponseDto.from(inquiryRepository.save(inquiry));
     }
+
+    public List<InquiryResponseDto> findAll() {
+        List<Inquiry> inquiries = inquiryRepository.findAll();
+        return inquiries.stream().map(InquiryResponseDto::from).collect(Collectors.toList());
+    }
 }
