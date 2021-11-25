@@ -80,19 +80,60 @@ public class HouseMapController {
     @GetMapping("/dong-search/user")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<List<LikedHouseInfoDto>> dongNameLiked(@RequestParam("dongName") String dongName, @RequestParam("userId") Long userId) throws Exception {
-        List<LikeAptResponseDto> likeApt = likeAptService.findByUserId(userId);
-        HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
-        for (LikeAptResponseDto l : likeApt) {
-            map.put(Integer.parseInt(l.getAptCode()), true);
-        }
+        HashMap<Integer, Boolean> map = likedStatusSet(userId);
         List<LikedHouseInfoDto> likedHouseInfoDto = haHouseMapService.likeDongNameSearch(dongName);
-        for (LikedHouseInfoDto l : likedHouseInfoDto) {
-            if (map.get(l.getAptCode()) == null) {
-                continue;
+        if (map != null) {
+            for (LikedHouseInfoDto l : likedHouseInfoDto) {
+                if (map.get(l.getAptCode()) == null) {
+                    continue;
+                }
+                l.setLikedStatus(true);
             }
-            l.setLikedStatus(true);
         }
         return new ResponseEntity<List<LikedHouseInfoDto>>(likedHouseInfoDto, HttpStatus.OK);
     }
 
+    @GetMapping("/gu/apt/user")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<List<LikedHouseInfoDto>> guAptLiked(@RequestParam("gugun") String gugun, @RequestParam("userId") Long userId) throws Exception {
+        HashMap<Integer, Boolean> map = likedStatusSet(userId);
+        List<LikedHouseInfoDto> likedHouseInfoDto = haHouseMapService.guAptLiked(gugun);
+        if (map != null) {
+            for (LikedHouseInfoDto l : likedHouseInfoDto) {
+                if (map.get(l.getAptCode()) == null) {
+                    continue;
+                }
+                l.setLikedStatus(true);
+            }
+        }
+        return new ResponseEntity<List<LikedHouseInfoDto>>(likedHouseInfoDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/apt/user")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<List<LikedHouseInfoDto>> getAptInDongLike(@RequestParam("dong") String dong, @RequestParam("userId") Long userId) throws Exception {
+        HashMap<Integer, Boolean> map = likedStatusSet(userId);
+        List<LikedHouseInfoDto> likedHouseInfoDto = haHouseMapService.getAptInDongLike(dong);
+        if (map != null) {
+            for (LikedHouseInfoDto l : likedHouseInfoDto) {
+                if (map.get(l.getAptCode()) == null) {
+                    continue;
+                }
+                l.setLikedStatus(true);
+            }
+        }
+        return new ResponseEntity<List<LikedHouseInfoDto>>(likedHouseInfoDto, HttpStatus.OK);
+    }
+
+    public HashMap<Integer, Boolean> likedStatusSet(Long userId) {
+        List<LikeAptResponseDto> likeApt = likeAptService.findByUserId(userId);
+        if (likeApt == null) {
+            return null;
+        }
+        HashMap<Integer, Boolean> map = new HashMap<>();
+        for (LikeAptResponseDto l : likeApt) {
+            map.put(Integer.parseInt(l.getAptCode()), true);
+        }
+        return map;
+    }
 }
