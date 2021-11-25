@@ -56,16 +56,11 @@ public class LikeAptService {
         }
         return userLikeAptList.stream().map(LikeAptResponseDto::from).collect(Collectors.toList());
     }
-
-
     @Transactional
-    public LikeAptResponseDto addLikeApt(LikeAptRequestDto likeAptRequestDto) {
+    public int addLikeApt(LikeAptRequestDto likeAptRequestDto) {
         UserEntity user = userRepository.findById(likeAptRequestDto.getUserId())
                 .orElseThrow(NoUserException::new);
-        return LikeAptResponseDto.from(likeAptRepository.save(LikeApt.builder()
-                .user(user)
-                .aptCode(likeAptRequestDto.getAptCode())
-                .build()));
+        return likeAptRepository.saveLikeAptCode(likeAptRequestDto.getUserId(),likeAptRequestDto.getAptCode());
     }
 
     @Transactional

@@ -47,8 +47,9 @@ public class LikeAptController {
     @PostMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Long> addLikeApt(@RequestBody @Valid LikeAptRequestDto likeAptDto) {
-        LikeAptResponseDto savedLikeApt = likeAptService.addLikeApt(likeAptDto);
-        return ResponseEntity.created(URI.create("/liked-apt-codes")).build();
+        log.info("likeAptDto" +likeAptDto.getUserId());
+        log.info("likeAptDto" +likeAptDto.getAptCode());
+        return ResponseEntity.created(URI.create("/"+likeAptService.addLikeApt(likeAptDto))).build();
     }
 
     @DeleteMapping
