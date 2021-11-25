@@ -67,8 +67,8 @@ public class InquiryController {
 
     @DeleteMapping("/answer")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<String> inquiryAnswerDelete(@RequestBody Map<String, Long> object) {
-        return ResponseEntity.ok("Inquiry Answer ID : " + inquiryService.answerDelete(object.get("id"), object.get("inquiryId")) + " 답변 삭제 완료");
+    public ResponseEntity<String> inquiryAnswerDelete(@RequestParam("id") Long id, @RequestParam("inquiryId") Long inquiryId) {
+        return ResponseEntity.ok("Inquiry Answer ID : " + inquiryService.answerDelete(id, inquiryId) + " 답변 삭제 완료");
     }
 
     @PutMapping("/answer")
