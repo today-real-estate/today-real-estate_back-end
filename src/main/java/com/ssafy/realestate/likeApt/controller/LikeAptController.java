@@ -32,10 +32,10 @@ public class LikeAptController {
         return ResponseEntity.ok(likeAptService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<List<HouseInfoDto>> getUserLikeApt(@PathVariable Long id) throws SQLException {
-        return new ResponseEntity(likeAptService.findByUserIdHouseList(id), HttpStatus.OK);
+    public ResponseEntity<List<HouseInfoDto>> getUserLikeApt(@RequestParam("userId") Long userId) throws SQLException {
+        return new ResponseEntity(likeAptService.findByUserIdHouseList(userId), HttpStatus.OK);
     }
 
     @GetMapping("/list")
