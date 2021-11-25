@@ -33,7 +33,6 @@ public class LikeAptController {
 //    }
 
     @GetMapping
-    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<List<HouseInfoDto>> getUserLikeApt(@RequestParam("userId") Long userId) throws SQLException {
         return new ResponseEntity(likeAptService.findByUserIdHouseList(userId), HttpStatus.OK);
     }
