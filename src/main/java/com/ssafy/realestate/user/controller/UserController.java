@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.ssafy.realestate.user.jwt.AuthInterceptor.TOKEN_HEADER;
@@ -43,8 +42,8 @@ public class UserController {
     }
 
     @GetMapping("/emails-check")
-    public ResponseEntity<Boolean> isDuplicatedEmail(@RequestBody Map<String, String> object) {
-        return new ResponseEntity(userManagementService.validateDuplicatedEmail(object.get("userEmail")), HttpStatus.OK);
+    public ResponseEntity<Boolean> isDuplicatedEmail(@RequestParam("userEmail") String userEmail) {
+        return new ResponseEntity(userManagementService.validateDuplicatedEmail(userEmail), HttpStatus.OK);
     }
 
     @PutMapping("/update/username")
