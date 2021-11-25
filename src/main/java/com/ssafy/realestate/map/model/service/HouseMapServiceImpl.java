@@ -2,6 +2,7 @@ package com.ssafy.realestate.map.model.service;
 
 
 import com.ssafy.realestate.map.model.HouseInfoDto;
+import com.ssafy.realestate.map.model.LikedHouseInfoDto;
 import com.ssafy.realestate.map.model.SidoGugunCodeDto;
 import com.ssafy.realestate.map.model.mapper.HouseMapMapper;
 import org.apache.ibatis.session.SqlSession;
@@ -62,5 +63,10 @@ public class HouseMapServiceImpl implements HouseMapService {
 	@Override
 	public List<HouseInfoDto> recommend(String dongName) throws SQLException {
 		return sqlSession.getMapper(HouseMapMapper.class).recommend(dongName);
+	}
+
+	@Override
+	public List<LikedHouseInfoDto> likeDongNameSearch(String dongName) throws SQLException {
+		return sqlSession.getMapper(HouseMapMapper.class).likeDongNameSearch(dongName);
 	}
 }

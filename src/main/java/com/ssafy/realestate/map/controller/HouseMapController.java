@@ -1,7 +1,10 @@
 package com.ssafy.realestate.map.controller;
 
 
+import com.ssafy.realestate.likeApt.dto.LikeAptResponseDto;
+import com.ssafy.realestate.likeApt.service.LikeAptService;
 import com.ssafy.realestate.map.model.HouseInfoDto;
+import com.ssafy.realestate.map.model.LikedHouseInfoDto;
 import com.ssafy.realestate.map.model.SidoGugunCodeDto;
 import com.ssafy.realestate.map.model.service.HouseMapService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/map")
 public class HouseMapController {
     @Autowired
     private HouseMapService haHouseMapService;
+    @Autowired
+    private LikeAptService likeAptService;
 
     @GetMapping("/sido")
     public ResponseEntity<List<SidoGugunCodeDto>> sido() throws Exception {
@@ -48,6 +55,7 @@ public class HouseMapController {
     public ResponseEntity<List<HouseInfoDto>> dongNameSearch(@RequestParam("dongName") String dongName) throws Exception {
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.dongNameSearch(dongName), HttpStatus.OK);
     }
+
     @GetMapping("/recommend")
     public ResponseEntity<List<HouseInfoDto>> recommend(@RequestParam("dongName") String dongName) throws Exception {
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.recommend(dongName), HttpStatus.OK);
@@ -67,6 +75,24 @@ public class HouseMapController {
     public ResponseEntity<List<HouseInfoDto>> likedAptList(@RequestParam("aptCodes") List<String> aptCodes) throws Exception {
         log.info(aptCodes.toString());
         return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.likedAptList(aptCodes), HttpStatus.OK);
+    }
+
+    @GetMapping("/dong-search/user")
+    public ResponseEntity<List<LikedHouseInfoDto>> dongNameLiked(@RequestParam("dongName") String dongName, @RequestParam("userId") Long userId) throws Exception {
+        List<LikeAptResponseDto> likeApt = likeAptService.findByUserId(userId);
+        HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+        for (LikeAptResponseDto l : likeApt) {
+            map.put(Integer.parseInt(l.getAptCode()), true);
+        }
+        List<LikedHouseInfoDto> likedHouseInfoDto = haHouseMapService.likeDongNameSearch(dongName);
+        for (LikedHouseInfoDto l : likedHouseInfoDto) {
+            System.out.println(l.getAptCode());
+            if (map.get(l.getAptCode()) == null) {
+                continue;
+            }
+            l.setLikedStatus(true);
+        }
+        return new ResponseEntity<List<LikedHouseInfoDto>>(likedHouseInfoDto, HttpStatus.OK);
     }
 
 }

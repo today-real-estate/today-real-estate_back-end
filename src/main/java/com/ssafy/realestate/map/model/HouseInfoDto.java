@@ -1,12 +1,8 @@
 package com.ssafy.realestate.map.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Random;
 
-@Getter
-@Setter
+
 public class HouseInfoDto {
 	private static Random random = new Random();
 	static int max =30;

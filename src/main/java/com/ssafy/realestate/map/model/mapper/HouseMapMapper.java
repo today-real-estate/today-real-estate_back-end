@@ -2,6 +2,7 @@ package com.ssafy.realestate.map.model.mapper;
 
 
 import com.ssafy.realestate.map.model.HouseInfoDto;
+import com.ssafy.realestate.map.model.LikedHouseInfoDto;
 import com.ssafy.realestate.map.model.SidoGugunCodeDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,5 @@ public interface HouseMapMapper {
 	List<HouseInfoDto> dongNameSearch(String dongName)throws SQLException;
     List<HouseInfoDto> likedAptList(List<String> aptCodes)throws SQLException;
 	List<HouseInfoDto> recommend(String dongName)throws SQLException;
+	List<LikedHouseInfoDto> likeDongNameSearch(String dongName)throws SQLException;
 }
