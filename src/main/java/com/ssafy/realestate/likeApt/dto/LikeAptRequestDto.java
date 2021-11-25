@@ -17,7 +17,7 @@ public class LikeAptRequestDto {
     @Id
     private Long userId;
 
-    @NotBlank(message = "동 코드가 없습니다.")
+    @NotBlank(message = "아파트 코드가 없습니다.")
     private String aptCode;
 
     public LikeApt toSaveLikeApt(UserEntity user) {
