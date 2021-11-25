@@ -1,7 +1,6 @@
 package com.ssafy.realestate.map.controller;
 
 import com.ssafy.realestate.map.model.NewsDto;
-import com.ssafy.realestate.map.model.SidoGugunCodeDto;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,42 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/news")
 public class NewsController {
-//    @GetMapping
-//    public ResponseEntity<List<NewsDto>> newsCrawling() throws Exception {
-//        String url = "https://realestate.daum.net/news";
-//        Document doc = null;
-//        try {
-//            doc = Jsoup.connect(url).get();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Elements element = doc.select("div.section_allnews");
-//        System.out.println("============================================================");
-//
-//        Iterator<Element> ie1 = element.select("box_allnews").iterator();
-//        List<NewsDto> news = new ArrayList<>();
-//        for (Element el : element.select("a.link_news")) {    //
-//            System.out.println(el.text());
-//            System.out.println(el.attr("href"));
-//            news.add(new NewsDto(el.text(), el.attr("href")));
-//
-//        }
-//        System.out.println("============================================================");
-//
-//        log.info(news.toString());
-//        return new ResponseEntity<List<NewsDto>>(news ,HttpStatus.OK);
-//    }
-
 
     @GetMapping
-    public ResponseEntity<List<NewsDto>> newsCrawling() throws Exception {
+    public ResponseEntity<List<NewsDto>> newsCrawling() {
         String urlString = "https://land.naver.com/";
         String url = "https://land.naver.com/news/breaking.naver";
         Document doc = null;
@@ -76,10 +48,9 @@ public class NewsController {
             newsContent = el.select("dd").get(0).text();
             newsContent = newsContent.replaceAll(writing, "");
             newsContent = newsContent.replaceAll(date, "");
-            news.add(new NewsDto(imageUrl,newsTitle,newsContent,newsLink,writing,date));
+            news.add(new NewsDto(imageUrl, newsTitle, newsContent, newsLink, writing, date));
 
         }
-        log.info(news.toString());
         return new ResponseEntity<List<NewsDto>>(news, HttpStatus.OK);
     }
 }
