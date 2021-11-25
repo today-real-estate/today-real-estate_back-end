@@ -67,9 +67,9 @@ public class UserController {
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@RequestParam("id") Long id) {
         userManagementService.deleteById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
