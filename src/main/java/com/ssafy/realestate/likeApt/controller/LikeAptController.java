@@ -26,11 +26,11 @@ import java.util.List;
 public class LikeAptController {
     private final LikeAptService likeAptService;
 
-    @GetMapping
-    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<List<LikeAptResponseDto>> getLikeAptList() {
-        return ResponseEntity.ok(likeAptService.findAll());
-    }
+//    @GetMapping
+//    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
+//    public ResponseEntity<List<LikeAptResponseDto>> getLikeAptList() {
+//        return ResponseEntity.ok(likeAptService.findAll());
+//    }
 
     @GetMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
