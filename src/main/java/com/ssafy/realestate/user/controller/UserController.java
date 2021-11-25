@@ -33,7 +33,7 @@ public class UserController {
         String jwt = tokenProvider.createToken(userEntity);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(AuthInterceptor.AUTHORIZATION_HEADER, TOKEN_HEADER + jwt);
-        return new ResponseEntity<>(UserTokenInfoDto.from(userEntity,jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(UserTokenInfoDto.from(userEntity, jwt), httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping("/signup")
@@ -77,10 +77,8 @@ public class UserController {
 
     @PutMapping("/recent-search")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Map<String,String>> recentSearch(@RequestBody UserRecentSearchDto recentSearchDto){
+    public ResponseEntity<Void> recentSearch(@RequestBody UserRecentSearchDto recentSearchDto) {
         userManagementService.recentSearch(recentSearchDto);
-        Map<String,String> recentMap = new HashMap<>();
-        recentMap.put("dongName",recentSearchDto.getDongName());
-        return new ResponseEntity(recentMap,HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -81,23 +81,25 @@ public class UserManagementService {
         }
         userRepository.deleteById(id);
     }
+
     @Transactional
     public void recentSearch(UserRecentSearchDto recentSearchDto) {
-        UserEntity updateUser = recentSearchDto.toUserRecentSearchEntity();
         UserEntity originUser = userRepository.findById(recentSearchDto.getId()).orElseThrow(NoUserException::new);
-
+        UserEntity updateUser = recentSearchDto.toUserRecentSearchEntity();
         UserEntity user = UserEntity.builder()
                 .id(originUser.getId())
                 .userEmail(originUser.getUserEmail())
                 .password(originUser.getPassword())
                 .userName(originUser.getUserName())
                 .nickname(originUser.getNickname())
-                .recentSearch(recentSearchDto.getDongName())
+                .recentSearch(updateUser.getRecentSearch())
                 .authorities(originUser.getAuthorities())
                 .inquiries(originUser.getInquiries())
+                .likedAptCodes(originUser.getLikedAptCodes())
                 .build();
         userRepository.save(user);
     }
+
     @Transactional
     public void updateUserName(UserUpdateDto userUpdateDto) {
         UserEntity updateUser = userUpdateDto.toUserEntity();
@@ -112,6 +114,7 @@ public class UserManagementService {
                 .recentSearch(originUser.getRecentSearch())
                 .authorities(originUser.getAuthorities())
                 .inquiries(originUser.getInquiries())
+                .likedAptCodes(originUser.getLikedAptCodes())
                 .build();
         userRepository.save(user);
     }
@@ -130,6 +133,7 @@ public class UserManagementService {
                 .recentSearch(originUser.getRecentSearch())
                 .authorities(originUser.getAuthorities())
                 .inquiries(originUser.getInquiries())
+                .likedAptCodes(originUser.getLikedAptCodes())
                 .build();
         userRepository.save(user);
     }

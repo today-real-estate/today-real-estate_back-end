@@ -15,13 +15,13 @@ public class UserRecentSearchDto {
     @Id
     private Long id;
 
-    @NotBlank(message = "Dong 코드가 필요합니다.")
-    private String dongName;
+    @NotBlank(message = "검색어가 없습니다.")
+    private String recentSearch;
 
     public UserEntity toUserRecentSearchEntity() {
         UserEntity userEntity = UserEntity.builder()
                 .id(id)
-                .recentSearch(dongName)
+                .recentSearch(recentSearch)
                 .build();
         return userEntity;
     }
