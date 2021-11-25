@@ -29,7 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/users/login")
                 .excludePathPatterns("/users/signup")
-                .excludePathPatterns("/map/**")
+//                .excludePathPatterns("/map/**")
                 .excludePathPatterns("/images/**");
     }
 

@@ -7,6 +7,7 @@ import com.ssafy.realestate.map.model.HouseInfoDto;
 import com.ssafy.realestate.map.model.LikedHouseInfoDto;
 import com.ssafy.realestate.map.model.SidoGugunCodeDto;
 import com.ssafy.realestate.map.model.service.HouseMapService;
+import com.ssafy.realestate.user.annotation.PreAuthorize;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,6 @@ public class HouseMapController {
     public ResponseEntity<List<SidoGugunCodeDto>> sido() throws Exception {
         return new ResponseEntity<List<SidoGugunCodeDto>>(haHouseMapService.getSido(), HttpStatus.OK);
     }
-
 
     @GetMapping("/gugun")
     public ResponseEntity<List<SidoGugunCodeDto>> gugun(@RequestParam("sido") String sido) throws Exception {
@@ -78,6 +78,7 @@ public class HouseMapController {
     }
 
     @GetMapping("/dong-search/user")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<List<LikedHouseInfoDto>> dongNameLiked(@RequestParam("dongName") String dongName, @RequestParam("userId") Long userId) throws Exception {
         List<LikeAptResponseDto> likeApt = likeAptService.findByUserId(userId);
         HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
@@ -86,7 +87,6 @@ public class HouseMapController {
         }
         List<LikedHouseInfoDto> likedHouseInfoDto = haHouseMapService.likeDongNameSearch(dongName);
         for (LikedHouseInfoDto l : likedHouseInfoDto) {
-            System.out.println(l.getAptCode());
             if (map.get(l.getAptCode()) == null) {
                 continue;
             }
