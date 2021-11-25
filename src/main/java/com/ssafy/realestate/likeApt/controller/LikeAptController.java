@@ -47,15 +47,15 @@ public class LikeAptController {
     @PostMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Long> addLikeApt(@RequestBody @Valid LikeAptRequestDto likeAptDto) {
-        log.info("likeAptDto" +likeAptDto.getUserId());
-        log.info("likeAptDto" +likeAptDto.getAptCode());
-        return ResponseEntity.created(URI.create("/"+likeAptService.addLikeApt(likeAptDto))).build();
+        log.info("likeAptDto" + likeAptDto.getUserId());
+        log.info("likeAptDto" + likeAptDto.getAptCode());
+        return ResponseEntity.created(URI.create("/" + likeAptService.addLikeApt(likeAptDto))).build();
     }
 
     @DeleteMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Long> deleteLikeApt(@RequestBody LikeAptRequestDto likeAptRequestDto) {
-        likeAptService.delete(likeAptRequestDto);
+    public ResponseEntity<Long> deleteLikeApt(@RequestParam("userId") Long userId, @RequestParam("aptCode") String aptCode) {
+        likeAptService.delete(new LikeAptRequestDto(userId, aptCode));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
