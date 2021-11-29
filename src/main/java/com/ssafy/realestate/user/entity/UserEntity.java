@@ -46,7 +46,7 @@ public class UserEntity extends BaseTimeEntity {
     @JsonManagedReference(value = "user-userAuthority")
     private List<UserAuthority> authorities;
 
-    @OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonManagedReference(value = "user-inquiry")
     private List<Inquiry> inquiries;
@@ -56,4 +56,16 @@ public class UserEntity extends BaseTimeEntity {
     @JsonManagedReference(value = "user-liked")
     private List<LikeApt> likedAptCodes;
 
+
+    public void updateRecentSearch(String recentSearch) {
+        this.recentSearch = recentSearch;
+    }
+
+    public void updateUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void updateNickName(String nickname) {
+        this.nickname = nickname;
+    }
 }
