@@ -71,8 +71,6 @@ public class HouseMapController {
         return new ResponseEntity<HouseInfoDto>(haHouseMapService.getAptName(aptCode), HttpStatus.OK);
     }
 
-
-
     @GetMapping("/dong-search/user")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<List<LikedHouseInfoDto>> dongNameLiked(@RequestParam("dongName") String dongName, @RequestParam("userId") Long userId) throws Exception {
