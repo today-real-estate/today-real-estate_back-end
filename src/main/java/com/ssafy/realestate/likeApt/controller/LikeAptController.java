@@ -26,12 +26,6 @@ import java.util.List;
 public class LikeAptController {
     private final LikeAptService likeAptService;
 
-//    @GetMapping
-//    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-//    public ResponseEntity<List<LikeAptResponseDto>> getLikeAptList() {
-//        return ResponseEntity.ok(likeAptService.findAll());
-//    }
-
     @GetMapping
     public ResponseEntity<List<HouseInfoDto>> getUserLikeApt(@RequestParam("userId") Long userId) throws SQLException {
         return new ResponseEntity(likeAptService.findByUserIdHouseList(userId), HttpStatus.OK);
@@ -46,8 +40,6 @@ public class LikeAptController {
     @PostMapping
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Long> addLikeApt(@RequestBody @Valid LikeAptRequestDto likeAptDto) {
-        log.info("likeAptDto" + likeAptDto.getUserId());
-        log.info("likeAptDto" + likeAptDto.getAptCode());
         return ResponseEntity.created(URI.create("/" + likeAptService.addLikeApt(likeAptDto))).build();
     }
 
