@@ -57,7 +57,6 @@ public class UserManagementService {
                 .userEntity(user)
                 .auth(auth)
                 .build();
-        log.info(userAuth.toString());
         userAuthorityRepository.save(userAuth);
         return UserResponseDto.from(userRepository.save(user));
     }
@@ -70,8 +69,8 @@ public class UserManagementService {
     }
 
     public UserResponseDto findById(Long id) {
-        Optional<UserEntity> user = userRepository.findById(id);
-        return UserResponseDto.from(user.orElseThrow(NoUserException::new));
+        UserEntity user = userRepository.findById(id).orElseThrow(NoUserException::new);
+        return UserResponseDto.from(user);
     }
 
     @Transactional
@@ -85,56 +84,18 @@ public class UserManagementService {
     @Transactional
     public void recentSearch(UserRecentSearchDto recentSearchDto) {
         UserEntity originUser = userRepository.findById(recentSearchDto.getId()).orElseThrow(NoUserException::new);
-        UserEntity updateUser = recentSearchDto.toUserRecentSearchEntity();
-        UserEntity user = UserEntity.builder()
-                .id(originUser.getId())
-                .userEmail(originUser.getUserEmail())
-                .password(originUser.getPassword())
-                .userName(originUser.getUserName())
-                .nickname(originUser.getNickname())
-                .recentSearch(updateUser.getRecentSearch())
-                .authorities(originUser.getAuthorities())
-                .inquiries(originUser.getInquiries())
-                .likedAptCodes(originUser.getLikedAptCodes())
-                .build();
-        userRepository.save(user);
+        originUser.updateRecentSearch(recentSearchDto.getRecentSearch());
     }
 
     @Transactional
     public void updateUserName(UserUpdateDto userUpdateDto) {
-        UserEntity updateUser = userUpdateDto.toUserEntity();
         UserEntity originUser = userRepository.findById(userUpdateDto.getUserId()).orElseThrow(NoUserException::new);
-
-        UserEntity user = UserEntity.builder()
-                .id(originUser.getId())
-                .userEmail(originUser.getUserEmail())
-                .password(originUser.getPassword())
-                .userName(updateUser.getUserName())
-                .nickname(originUser.getNickname())
-                .recentSearch(originUser.getRecentSearch())
-                .authorities(originUser.getAuthorities())
-                .inquiries(originUser.getInquiries())
-                .likedAptCodes(originUser.getLikedAptCodes())
-                .build();
-        userRepository.save(user);
+        originUser.updateUserName(userUpdateDto.getUserName());
     }
 
     @Transactional
     public void updateNickName(UpdateNickDto updateNickDto) {
-        UserEntity updateUser = updateNickDto.toUserEntity();
         UserEntity originUser = userRepository.findById(updateNickDto.getUserId()).orElseThrow(NoUserException::new);
-
-        UserEntity user = UserEntity.builder()
-                .id(originUser.getId())
-                .userEmail(originUser.getUserEmail())
-                .password(originUser.getPassword())
-                .userName(originUser.getUserName())
-                .nickname(updateUser.getNickname())
-                .recentSearch(originUser.getRecentSearch())
-                .authorities(originUser.getAuthorities())
-                .inquiries(originUser.getInquiries())
-                .likedAptCodes(originUser.getLikedAptCodes())
-                .build();
-        userRepository.save(user);
+        originUser.updateNickName(updateNickDto.getNickname());
     }
 }
