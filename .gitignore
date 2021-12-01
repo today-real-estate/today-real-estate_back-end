@@ -4,11 +4,11 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-/src/main/resources/static/**
-/src/main/resources/application.yml
+#/src/main/resources/static/**
+#/src/main/resources/application.yml
 /src/main/resources/application.properties
 aws.yml
-application.yml
+#application.yml
 ### STS ###
 .apt_generated
 .classpath
@@ -31,7 +31,7 @@ out/
 !**/src/test/**/out/
 
 ### my ignore ###
-src/main/resources/application.yml
+#src/main/resources/application.yml
 
 ### NetBeans ###
 /nbproject/private/
