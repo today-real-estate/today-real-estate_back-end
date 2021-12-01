@@ -7,19 +7,6 @@ resouces:
   notload:
     list: /resources/**
 
-cloud:
-  aws:
-    credentials:
-      accessKey: AKIAZ7EHESGKFIL3O75C
-      secretKey: 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
-    s3:
-      bucket: community-web-image
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-server:
-  port: 9000
 ---
 spring:
   datasource:
