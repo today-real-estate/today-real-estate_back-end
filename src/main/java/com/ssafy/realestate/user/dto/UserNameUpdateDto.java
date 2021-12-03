@@ -1,7 +1,6 @@
 package com.ssafy.realestate.user.dto;
 
 
-import com.ssafy.realestate.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateDto {
+public class UserNameUpdateDto {
     @Id
     private Long userId;
 
@@ -21,11 +20,4 @@ public class UserUpdateDto {
     @Length(min = 2, max = 10, message = "2~10자리의 이름을 입력하세요.")
     private String userName;
 
-    public UserEntity toUserEntity() {
-        UserEntity userEntity = UserEntity.builder()
-                .id(userId)
-                .userName(userName)
-                .build();
-        return userEntity;
-    }
 }

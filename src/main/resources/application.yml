@@ -6,6 +6,8 @@ jwt:
 resouces:
   notload:
     list: /resources/**
+server:
+  port: 9000
 
 ---
 spring:
@@ -68,4 +70,3 @@ spring:
             descriptor:
               sql:
                 BasicBinder: TRACE
-
