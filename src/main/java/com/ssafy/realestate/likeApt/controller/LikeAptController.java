@@ -1,6 +1,5 @@
 package com.ssafy.realestate.likeApt.controller;
 
-
 import com.ssafy.realestate.likeApt.dto.LikeAptRequestDto;
 import com.ssafy.realestate.likeApt.dto.LikeAptResponseDto;
 import com.ssafy.realestate.likeApt.service.LikeAptService;
