@@ -5,8 +5,8 @@ import com.ssafy.realestate.likeApt.dto.LikeAptRequestDto;
 import com.ssafy.realestate.likeApt.dto.LikeAptResponseDto;
 import com.ssafy.realestate.likeApt.entity.LikeApt;
 import com.ssafy.realestate.likeApt.repository.LikeAptRepository;
-import com.ssafy.realestate.map.model.LikedHouseInfoDto;
-import com.ssafy.realestate.map.model.service.HouseMapService;
+import com.ssafy.realestate.map.dto.HouseInfoResponseDto;
+import com.ssafy.realestate.map.service.HouseMapService;
 import com.ssafy.realestate.user.entity.UserEntity;
 import com.ssafy.realestate.user.exception.NoUserException;
 import com.ssafy.realestate.user.repository.UserRepository;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,16 +23,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class LikeAptService {
+
     private final LikeAptRepository likeAptRepository;
     private final UserRepository userRepository;
     private final HouseMapService houseMapService;
 
-    public List<LikeAptResponseDto> findAll() {
-        List<LikeApt> likeAptList = likeAptRepository.findAll();
-        return likeAptList.stream().map(LikeAptResponseDto::from).collect(Collectors.toList());
-    }
-
-    public List<LikedHouseInfoDto> findByUserIdHouseList(Long id) throws SQLException {
+    public List<HouseInfoResponseDto> findByUserIdHouseList(Long id) {
         List<LikeApt> userLikeAptList = likeAptRepository.findByUserId(id);
         if (userLikeAptList.isEmpty()) {
             return null;
@@ -42,12 +37,11 @@ public class LikeAptService {
         for (LikeApt likeApt : userLikeAptList) {
             aptCode.add(likeApt.getAptCode());
         }
-        List<LikedHouseInfoDto> likedHouseInfoDto = houseMapService.likedAptList(aptCode);
-
-        for (LikedHouseInfoDto l : likedHouseInfoDto) {
+        List<HouseInfoResponseDto> list = houseMapService.likedAptList(aptCode);
+        for (HouseInfoResponseDto l : list) {
             l.setLikedStatus(true);
         }
-        return likedHouseInfoDto;
+        return list;
     }
 
     public List<LikeAptResponseDto> findByUserId(Long id) {
