@@ -22,6 +22,7 @@ import static com.ssafy.realestate.user.jwt.AuthInterceptor.TOKEN_HEADER;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
+
     private final UserManagementService userManagementService;
     private final TokenProvider tokenProvider;
 
@@ -47,8 +48,8 @@ public class UserController {
 
     @PutMapping("/update/username")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
-    public ResponseEntity<Void> updateName(@RequestBody @Valid UserUpdateDto userUpdateDto) {
-        userManagementService.updateUserName(userUpdateDto);
+    public ResponseEntity<Void> updateName(@RequestBody @Valid UserNameUpdateDto userNameUpdateDto) {
+        userManagementService.updateUserName(userNameUpdateDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 

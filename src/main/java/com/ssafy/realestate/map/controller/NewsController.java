@@ -1,6 +1,6 @@
 package com.ssafy.realestate.map.controller;
 
-import com.ssafy.realestate.map.model.NewsDto;
+import com.ssafy.realestate.map.dto.NewsDto;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

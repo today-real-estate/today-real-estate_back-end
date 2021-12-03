@@ -17,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -88,9 +86,9 @@ public class UserManagementService {
     }
 
     @Transactional
-    public void updateUserName(UserUpdateDto userUpdateDto) {
-        UserEntity originUser = userRepository.findById(userUpdateDto.getUserId()).orElseThrow(NoUserException::new);
-        originUser.updateUserName(userUpdateDto.getUserName());
+    public void updateUserName(UserNameUpdateDto userNameUpdateDto) {
+        UserEntity originUser = userRepository.findById(userNameUpdateDto.getUserId()).orElseThrow(NoUserException::new);
+        originUser.updateUserName(userNameUpdateDto.getUserName());
     }
 
     @Transactional

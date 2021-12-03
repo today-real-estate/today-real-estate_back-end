@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserLoginRequestDto {
+
     @NotBlank(message = "이메일을 입력하세요.")
     @Email(message = "이메일 형식을 확인하세요.")
     private String userEmail;
