@@ -36,19 +36,12 @@ public class NoticeService {
     }
 
     @Transactional
-    public NoticeResponseDto update(NoticeUpdateRequestDto noticeUpdateRequestDto) {
-        Notice updateNotice = noticeUpdateRequestDto.toUpdateNotice();
+    public Long update(NoticeUpdateRequestDto noticeUpdateRequestDto) {
         Notice originNotice = noticeRepository.findById(noticeUpdateRequestDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공지사항입니다."));
-
-        Notice notice = Notice.builder()
-                .id(originNotice.getId())
-                .title(updateNotice.getTitle())
-                .content(updateNotice.getContent())
-                .build();
-        return NoticeResponseDto.from(noticeRepository.save(notice));
+        originNotice.update(noticeUpdateRequestDto);
+        return originNotice.getId();
     }
-
 
     public void deleteById(Long id) {
         if (!noticeRepository.existsById(id)) {
