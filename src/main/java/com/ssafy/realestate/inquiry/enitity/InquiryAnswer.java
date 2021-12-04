@@ -26,4 +26,8 @@ public class InquiryAnswer extends BaseTimeEntity {
 
     @NotBlank(message = "내용을 입력하세요")
     private String answerContent;
+
+    public void answerUpdate(String answerContent){
+        this.answerContent=answerContent;
+    }
 }

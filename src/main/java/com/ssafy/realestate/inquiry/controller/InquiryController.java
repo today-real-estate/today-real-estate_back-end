@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -43,7 +42,7 @@ public class InquiryController {
     @PutMapping("/update")
     @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<String> update(@RequestBody InquiryUpdateDto inquiryUpdateDto) {
-        return new ResponseEntity("id :" + inquiryService.update(inquiryUpdateDto).getId() + " 수정완료", HttpStatus.OK);
+        return new ResponseEntity("id :" + inquiryService.update(inquiryUpdateDto)+ " 수정완료", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

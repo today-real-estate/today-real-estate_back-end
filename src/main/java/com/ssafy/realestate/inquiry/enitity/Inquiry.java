@@ -3,6 +3,7 @@ package com.ssafy.realestate.inquiry.enitity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.realestate.common.BaseTimeEntity;
+import com.ssafy.realestate.inquiry.dto.InquiryUpdateDto;
 import com.ssafy.realestate.user.entity.UserEntity;
 import lombok.*;
 
@@ -42,4 +43,11 @@ public class Inquiry extends BaseTimeEntity {
     @JsonManagedReference(value = "inquiry-inquiry_answer")
     private List<InquiryAnswer> inquiryAnswer;
 
+    public void updateInquiry(InquiryUpdateDto inquiryUpdateDto){
+        this.title = inquiryUpdateDto.getTitle();
+        this.content = inquiryUpdateDto.getContent();
+    }
+    public void isCompleteInquiryUpdate(boolean isComplete){
+        this.isComplete = isComplete;
+    }
 }

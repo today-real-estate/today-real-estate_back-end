@@ -21,9 +21,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class InquiryService {
+
     private final InquiryRepository inquiryRepository;
     private final InquiryAnswerRepository inquiryAnswerRepository;
     private final UserRepository userRepository;
+
+    public List<InquiryResponseDto> findAll() {
+        List<Inquiry> inquiries = inquiryRepository.findAll();
+        return inquiries.stream().map(InquiryResponseDto::from).collect(Collectors.toList());
+    }
 
     public List<InquiryResponseDto> findByUserId(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(NoUserException::new);
@@ -44,35 +50,19 @@ public class InquiryService {
     }
 
     @Transactional
-    public InquiryResponseDto update(InquiryUpdateDto inquiryUpdateDto) {
-        Inquiry updateInquiry = inquiryUpdateDto.toUpdateInquiryEntity();
+    public Long update(InquiryUpdateDto inquiryUpdateDto) {
         Inquiry originInquiry = inquiryRepository.findById(inquiryUpdateDto.getId())
                 .orElseThrow(NoInquiryIdException::new);
-
-        Inquiry inquiry = Inquiry.builder()
-                .id(updateInquiry.getId())
-                .inquiryType(updateInquiry.getInquiryType())
-                .title(updateInquiry.getTitle())
-                .content(updateInquiry.getContent())
-                .isComplete(originInquiry.isComplete())
-                .user(originInquiry.getUser())
-                .inquiryAnswer(originInquiry.getInquiryAnswer())
-                .build();
-        return InquiryResponseDto.from(inquiryRepository.save(inquiry));
+        originInquiry.updateInquiry(inquiryUpdateDto);
+        return originInquiry.getId();
     }
 
     @Transactional
     public Long answerUpdate(InquiryAnswerUpdateDto inquiryAnswerUpdateDto) {
-        InquiryAnswer update = inquiryAnswerUpdateDto.toUpdateInquiryAnswerEntity();
-        InquiryAnswer origin = inquiryAnswerRepository.findById(inquiryAnswerUpdateDto.getId())
+        InquiryAnswer originAnswer = inquiryAnswerRepository.findById(inquiryAnswerUpdateDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("답글 ID가 존재하지 않습니다."));
-
-        InquiryAnswer inquiryAnswer = InquiryAnswer.builder()
-                .id(origin.getId())
-                .inquiry(origin.getInquiry())
-                .answerContent(update.getAnswerContent())
-                .build();
-        return inquiryAnswerRepository.save(inquiryAnswer).getId();
+        originAnswer.answerUpdate(inquiryAnswerUpdateDto.getAnswerContent());
+        return originAnswer.getId();
     }
 
     @Transactional
@@ -91,32 +81,21 @@ public class InquiryService {
 
     @Transactional
     public Long answerDelete(Long id, Long inquiryId) {
+        InquiryAnswer inquiryAnswer = inquiryAnswerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("답글 ID가 존재하지 않습니다."));
         inquiryAnswerRepository.deleteById(id);
-        Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(NoInquiryIdException::new);
-        if (inquiry.getInquiryAnswer().size() == 1) {
+        Inquiry originInquiry = inquiryRepository.findById(inquiryId).orElseThrow(NoInquiryIdException::new);
+        if (originInquiry.getInquiryAnswer().size() == 1) {
             isCompleteInquiryUpdate(inquiryId, false);
         }
-        return id;
+        return inquiryAnswer.getId();
     }
 
     @Transactional
     public void isCompleteInquiryUpdate(Long id, Boolean isComplete) {
         Inquiry originInquiry = inquiryRepository.findById(id)
                 .orElseThrow(NoInquiryIdException::new);
-        Inquiry inquiry = Inquiry.builder()
-                .id(originInquiry.getId())
-                .inquiryType(originInquiry.getInquiryType())
-                .title(originInquiry.getTitle())
-                .content(originInquiry.getContent())
-                .isComplete(isComplete)
-                .user(originInquiry.getUser())
-                .inquiryAnswer(originInquiry.getInquiryAnswer())
-                .build();
-        InquiryResponseDto.from(inquiryRepository.save(inquiry));
+        originInquiry.isCompleteInquiryUpdate(isComplete);
     }
 
-    public List<InquiryResponseDto> findAll() {
-        List<Inquiry> inquiries = inquiryRepository.findAll();
-        return inquiries.stream().map(InquiryResponseDto::from).collect(Collectors.toList());
-    }
 }

@@ -1,6 +1,5 @@
 package com.ssafy.realestate.inquiry.dto;
 
-import com.ssafy.realestate.inquiry.enitity.Inquiry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,15 +26,4 @@ public class InquiryUpdateDto {
     @NotBlank(message = "내용을 입력하세요")
     private String content;
 
-
-    public Inquiry toUpdateInquiryEntity() {
-        Inquiry inquiry = Inquiry.builder()
-                .id(id)
-                .inquiryType(inquiryType)
-                .title(title)
-                .content(content)
-                .build();
-        return inquiry;
-
-    }
 }
