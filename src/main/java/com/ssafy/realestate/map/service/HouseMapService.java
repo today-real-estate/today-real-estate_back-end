@@ -10,6 +10,7 @@ import com.ssafy.realestate.map.repository.HouseMapRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,9 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+//@Transactional(readOnly = true)
 public class HouseMapService {
+
     private final HouseMapRepository houseMapRepository;
     private final LikeAptRepository likeAptRepository;
 
@@ -48,6 +51,7 @@ public class HouseMapService {
     public List<HouseInfoResponseDto> getRecommend(String dongName) {
         return houseMapRepository.getRecommend(dongName);
     }
+
     public List<HouseInfoResponseDto> likedAptList(List<String> aptCode) {
         return houseMapRepository.likedAptList(aptCode);
     }
@@ -57,10 +61,9 @@ public class HouseMapService {
         List<HouseInfoResponseDto> list = houseMapRepository.getguApt(gugun);
         if (map != null) {
             for (HouseInfoResponseDto l : list) {
-                if (map.get(l.getAptCode()) == null) {
-                    continue;
+                if (map.containsKey(l.getAptCode())) {
+                    l.setLikedStatus(true);
                 }
-                l.setLikedStatus(true);
             }
         }
         return list;
@@ -71,10 +74,9 @@ public class HouseMapService {
         List<HouseInfoResponseDto> list = houseMapRepository.getAptInDong(dong);
         if (map != null) {
             for (HouseInfoResponseDto l : list) {
-                if (map.get(l.getAptCode()) == null) {
-                    continue;
+                if (map.containsKey(l.getAptCode())) {
+                    l.setLikedStatus(true);
                 }
-                l.setLikedStatus(true);
             }
         }
         return list;
@@ -85,10 +87,9 @@ public class HouseMapService {
         List<HouseInfoResponseDto> list = houseMapRepository.getDongNameSearch(dongName);
         if (map != null) {
             for (HouseInfoResponseDto l : list) {
-                if (map.get(l.getAptCode()) == null) {
-                    continue;
+                if (map.containsKey(l.getAptCode())) {
+                    l.setLikedStatus(true);
                 }
-                l.setLikedStatus(true);
             }
         }
         return list;
@@ -96,12 +97,11 @@ public class HouseMapService {
 
     public HashMap<Integer, Boolean> likedStatusSet(Long userId) {
         List<LikeApt> likeApt = likeAptRepository.findByUserId(userId);
-        if (likeApt == null) {
-            return null;
-        }
         HashMap<Integer, Boolean> map = new HashMap<>();
-        for (LikeApt l : likeApt) {
-            map.put(Integer.parseInt(l.getAptCode()), true);
+        if (!likeApt.isEmpty()) {
+            for (LikeApt l : likeApt) {
+                map.put(Integer.parseInt(l.getAptCode()), true);
+            }
         }
         return map;
     }

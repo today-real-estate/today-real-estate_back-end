@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -17,7 +16,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Repository
-@Transactional(readOnly = true)
 public class HouseMapRepository {
 
     private final EntityManager entityManager;
