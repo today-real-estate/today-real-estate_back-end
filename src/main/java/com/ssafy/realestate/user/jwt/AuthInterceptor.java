@@ -15,7 +15,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.ssafy.realestate.user.jwt.TokenProvider.AUTHORITIES_KEY;
@@ -33,7 +32,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) {
-        if (isPreflightRequest(request)) {
+        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;
         }
         HandlerMethod method = (HandlerMethod) handler;
@@ -47,27 +46,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         return true;
     }
-
-    private boolean isPreflightRequest(HttpServletRequest request) {
-        return isOptions(request) && hasHeaders(request) && hasMethod(request) && hasOrigin(request);
-    }
-
-    private boolean isOptions(HttpServletRequest request) {
-        return request.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS.toString());
-    }
-
-    private boolean hasHeaders(HttpServletRequest request) {
-        return Objects.nonNull(request.getHeader("Access-Control-Request-Headers"));
-    }
-
-    private boolean hasMethod(HttpServletRequest request) {
-        return Objects.nonNull(request.getHeader("Access-Control-Request-Method"));
-    }
-
-    private boolean hasOrigin(HttpServletRequest request) {
-        return Objects.nonNull(request.getHeader("Origin"));
-    }
-
 
     private Optional<String> resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
