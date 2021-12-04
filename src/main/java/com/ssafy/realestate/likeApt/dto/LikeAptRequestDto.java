@@ -20,11 +20,12 @@ public class LikeAptRequestDto {
     @NotBlank(message = "아파트 코드가 없습니다.")
     private String aptCode;
 
-    public LikeApt toSaveLikeApt(UserEntity user) {
+    public LikeApt toSaveLikeApt(UserEntity user,LikeAptRequestDto likeAptRequestDto) {
         LikeApt likeApt = LikeApt.builder()
                 .user(user)
-                .aptCode(aptCode)
+                .aptCode(likeAptRequestDto.getAptCode())
                 .build();
         return likeApt;
     }
+
 }

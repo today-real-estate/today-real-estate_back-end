@@ -42,8 +42,7 @@ public class NoticeController {
     @PutMapping("/update")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<String> update(@RequestBody NoticeUpdateRequestDto noticeUpdateRequestDto) {
-        NoticeResponseDto NoticeResponseDto = noticeService.update(noticeUpdateRequestDto);
-        return ResponseEntity.created(URI.create("/" + NoticeResponseDto.getId()))
+        return ResponseEntity.created(URI.create("/" +  noticeService.update(noticeUpdateRequestDto)))
                 .build();
     }
 

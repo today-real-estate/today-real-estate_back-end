@@ -11,10 +11,6 @@ import java.util.List;
 
 @Repository
 public interface LikeAptRepository extends JpaRepository<LikeApt, Long> {
-    @Transactional
-    @Modifying
-    @Query(value = "INSERT INTO like_apt(user_id, apt_code)VALUES(:userId,:aptCode)", nativeQuery = true)
-    int saveLikeAptCode(Long userId, String aptCode);
 
     List<LikeApt> findByUserId(Long id);
 

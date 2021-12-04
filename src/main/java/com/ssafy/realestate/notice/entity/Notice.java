@@ -1,6 +1,8 @@
 package com.ssafy.realestate.notice.entity;
 
 import com.ssafy.realestate.common.BaseTimeEntity;
+import com.ssafy.realestate.notice.dto.NoticeRequestDto;
+import com.ssafy.realestate.notice.dto.NoticeUpdateRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,5 +24,10 @@ public class Notice extends BaseTimeEntity {
 
     @NotBlank(message = "내용을 입력하세요")
     private String content;
+
+    public void update(NoticeUpdateRequestDto noticeUpdateRequestDto) {
+        this.title = noticeUpdateRequestDto.getTitle();
+        this.content = noticeUpdateRequestDto.getContent();
+    }
 
 }

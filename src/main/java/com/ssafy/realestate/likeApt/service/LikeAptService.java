@@ -53,10 +53,10 @@ public class LikeAptService {
     }
 
     @Transactional
-    public int addLikeApt(LikeAptRequestDto likeAptRequestDto) {
+    public Long addLikeApt(LikeAptRequestDto likeAptRequestDto) {
         UserEntity user = userRepository.findById(likeAptRequestDto.getUserId())
                 .orElseThrow(NoUserException::new);
-        return likeAptRepository.saveLikeAptCode(likeAptRequestDto.getUserId(), likeAptRequestDto.getAptCode());
+        return likeAptRepository.save(likeAptRequestDto.toSaveLikeApt(user,likeAptRequestDto)).getId();
     }
 
     @Transactional
